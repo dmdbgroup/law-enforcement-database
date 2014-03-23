@@ -10,7 +10,7 @@ delete from `case`;
 insert into user values ("cyrill", "12345");
 insert into user values ("andreas", "asdf");
 
-insert into `case` (open, title, description, location, time) values ( FALSE, "case 1", "description 1", "location 1", "2011-12-18 13:17:17");
+insert into `case` (open, title, description, location, time) values ( TRUE, "case 1", "description 1", "location 1", "2011-12-18 13:17:17");
 insert into `case` (open, title, description, location, time) values ( TRUE, "case 2", "description 2", "location 2", "2013-12-18 13:17:17");
 
 insert into poi (name, birthdate) values ( "alex", "2013-12-19");
