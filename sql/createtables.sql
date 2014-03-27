@@ -3,35 +3,36 @@ drop table if exists case_note;
 drop table if exists poi_note;
 drop table if exists is_linked_to;
 drop table if exists `case`;
-drop table if exists poi;
 drop table if exists type;
+drop table if exists poi;
 
 
 create table user ( name nvarchar(255) not null primary key, 
 	password nvarchar(255) not null);
+
+create table type ( id int auto_increment primary key, 
+	name nvarchar(255) not null);
 
 create table `case` ( id int auto_increment primary key, 
 	open boolean not null, 
 	title nvarchar(255) not null, 
 	description nvarchar(2000) not null, 
 	location nvarchar(255) not null, 
-	time datetime not null);
+	time datetime not null,
+	type_id int,
+	foreign key (type_id) references type(id) on delete cascade
+	);
 
 create table poi ( id int auto_increment primary key, 
 	name nvarchar(255) not null, 
 	birthdate date not null);
 
-create table type ( id int auto_increment primary key, 
-	name nvarchar(255) not null);
-
 create table is_linked_to ( case_id int, 
 	poi_id int, 
-	type_id int, 
 	time datetime not null, 
 	end_time datetime, 
 	foreign key (case_id) references `case`(id) on delete cascade, 
-	foreign key (poi_id) references poi(id) on delete cascade, 
-	foreign key (type_id) references type(id) on delete cascade);
+	foreign key (poi_id) references poi(id) on delete cascade);
 
 create table case_note ( id int auto_increment primary key, 
 	case_id int, 
