@@ -17,7 +17,7 @@
 			<tr>
 				<th id="masterHeader" colspan="2">
 					<h1>Law Enforcement Project</h1>
-					Project by &lt;Name Here&gt; 
+					Project by Cyrill Krähenbühl, Alexander Peiker und Andreas Hess; 
 				</th>
 			</tr>
 			<tr id="masterContent">

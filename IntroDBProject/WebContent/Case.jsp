@@ -19,7 +19,7 @@ if (user != null) {
 %>
 	<form action="Case" method="get">
 		<input type="hidden" name="action" value="add_comment" />
-		<input type="hidden" name="user_id" value="<%= user.getUserid() %>" />
+		<input type="hidden" name="user_id" value="<%= user.getUsername() %>" />
 		Add Comment
 		<br />
 		<textarea rows="4" cols="50" name="comment"></textarea>
@@ -30,9 +30,12 @@ if (user != null) {
 }
 %>
 
-<%
-	//TODO Display existing comments
-	//session.getAttribute("commentTable")
-%>
+<h2>Notes</h2>
+
+<%=session.getAttribute("notesTable")%>
+
+<h2>Convictions</h2>
+
+<%=session.getAttribute("convictionsTable")%>
 
 <%@ include file="Footer.jsp"%>

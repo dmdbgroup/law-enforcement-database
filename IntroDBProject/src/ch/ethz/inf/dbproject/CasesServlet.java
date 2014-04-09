@@ -47,17 +47,11 @@ public final class CasesServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-
-		/*
-		 * Column 1: The name of the item (This will probably have to be changed)
-		 */
+		table.addBeanColumn("Title", "title");
+		table.addBeanColumn("open", "open");
 		table.addBeanColumn("Case Description", "description");
-
-		/*
-		 * Columns 2 & 3: Some random fields. These should be replaced by i.e. funding progress, or time remaining
-		 */
-		table.addBeanColumn("Test Field2", "field2");
-		table.addBeanColumn("Test Integer Field 3", "field3");
+		table.addBeanColumn("location", "streetWithNumber");
+		table.addBeanColumn("time", "time");
 
 		/*
 		 * Column 4: This is a special column. It adds a link to view the

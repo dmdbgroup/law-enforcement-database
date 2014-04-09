@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ch.ethz.inf.dbproject.model.Case;
+import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 /**
@@ -19,6 +20,7 @@ import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 public final class SearchServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	private final DatastoreInterface dbInterface = new DatastoreInterface();
 		
     /**
      * @see HttpServlet#HttpServlet()

@@ -8,7 +8,7 @@
 <form method="get" action="Search">
 <div>
 	<input type="hidden" name="filter" value="description" />
-	Search By Name:
+	Search By Description:
 	<input type="text" name="description" />
 	<input type="submit" value="Search" title="Search by Description" />
 </div>

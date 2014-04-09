@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ch.ethz.inf.dbproject.model.CaseComment;
 import ch.ethz.inf.dbproject.model.Conviction;
-import ch.ethz.inf.dbproject.model.Comment;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
+import ch.ethz.inf.dbproject.model.PersonOfInterest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -49,34 +50,14 @@ public final class CaseServlet extends HttpServlet {
 
 			final Integer id = Integer.parseInt(idString);
 			final Case aCase = this.dbInterface.getCaseById(id);
+			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
+			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
 
+
+			session.setAttribute("caseTable", caseTable(aCase));	
+			session.setAttribute("notesTable", notesTable(notes));
+			session.setAttribute("convictionsTable", convictionTable(convictions));
 			
-			/*******************************************************
-			 * Construct a table to present all properties of a case
-			 *******************************************************/
-			final BeanTableHelper<Case> table = new BeanTableHelper<Case>(
-					"cases" 		/* The table html id property */,
-					"casesTable" /* The table html class property */,
-					Case.class 	/* The class of the objects (rows) that will be displayed */
-			);
-
-			// Add columns to the new table
-
-			/*
-			 * Column 1: The name of the item (This will probably have to be changed)
-			 */
-			table.addBeanColumn("Case Description", "description");
-
-			/*
-			 * Columns 2 & 3: Some random fields. These should be replaced by i.e. funding progress, or time remaining
-			 */
-			table.addBeanColumn("Test Field2", "field2");
-			table.addBeanColumn("Test Integer Field 3", "field3");
-
-			table.addObject(aCase);
-			table.setVertical(true);			
-
-			session.setAttribute("caseTable", table);			
 			
 		} catch (final Exception ex) {
 			ex.printStackTrace();
@@ -84,5 +65,70 @@ public final class CaseServlet extends HttpServlet {
 		}
 
 		this.getServletContext().getRequestDispatcher("/Case.jsp").forward(request, response);
+	}
+	
+	private BeanTableHelper<Case> caseTable(final Case c)
+	{
+		/*******************************************************
+		 * Construct a table to present all properties of a case
+		 *******************************************************/
+		final BeanTableHelper<Case> table = new BeanTableHelper<Case>(
+				"cases" 		/* The table html id property */,
+				"casesTable" /* The table html class property */,
+				Case.class 	/* The class of the objects (rows) that will be displayed */
+		);
+
+		// Add columns to the new table
+		table.addBeanColumn("Title", "title");
+		table.addBeanColumn("open", "open");
+		table.addBeanColumn("Case Description", "description");
+		table.addBeanColumn("location", "streetWithNumber");
+		table.addBeanColumn("time", "time");
+
+		table.addObject(c);
+		table.setVertical(true);
+		
+		return table;
+	}
+	
+	private BeanTableHelper<CaseComment> notesTable(final List<CaseComment> notes)
+	{
+		/*******************************************************
+		 * Construct a table to present all notes of a case
+		 *******************************************************/
+		final BeanTableHelper<CaseComment> table = new BeanTableHelper<CaseComment>(
+				"notes" 		/* The table html id property */,
+				"casesTable" /* The table html class property; The same layout as the case table*/,
+				CaseComment.class 	/* The class of the objects (rows) that will be displayed */
+		);
+
+		// Add columns to the new table
+		table.addBeanColumn("text", "text");
+
+		table.addObjects(notes);
+		
+		return table;
+	}
+	
+	private BeanTableHelper<Conviction> convictionTable(final List<Conviction> convictions)
+	{
+		/*******************************************************
+		 * Construct a table to present all notes of a case
+		 *******************************************************/
+		final BeanTableHelper<Conviction> table = new BeanTableHelper<Conviction>(
+				"conviction" 		/* The table html id property */,
+				"casesTable" /* The table html class property; The same layout as the case table*/,
+				Conviction.class 	/* The class of the objects (rows) that will be displayed */
+		);
+
+		// Add columns to the new table
+		table.addBeanColumn("name", "personOfInterest");
+		table.addBeanColumn("category", "category");
+		table.addBeanColumn("date", "date");
+		table.addBeanColumn("end date", "endDate");
+
+		table.addObjects(convictions);
+		
+		return table;
 	}
 }

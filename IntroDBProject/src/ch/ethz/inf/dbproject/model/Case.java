@@ -2,56 +2,92 @@ package ch.ethz.inf.dbproject.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 
-public final class Case {
-	
-	/**
-	 * TODO The properties of the case should be added here
-	 */
+public final class Case
+{
+
 	private final int id;
+	private final int address_id;
+	private final boolean open;
+	private final String title;
 	private final String description;
-	private final String field2;
-	private final int field3;
-	
+	private final Time time;
+	private Address address;
+
 	/**
 	 * Construct a new case.
-	 * 
-	 * @param description		The name of the case
 	 */
-	public Case(	final int id, final String description, final String field2, final int field3) {
+	public Case(final int id, final int address_id, final boolean open,
+			final String title, final String description, final Time time)
+	{
 		this.id = id;
+		this.address_id = address_id;
+		this.open = open;
+		this.title = title;
 		this.description = description;
-		this.field2 = field2;
-		this.field3 = field3;
+		this.time = time;
 	}
-	
-	public Case(	final ResultSet rs) throws SQLException {
-		// TODO These need to be adapted to your schema
-		// TODO Extra properties need to be added
+
+	public Case(final ResultSet rs) throws SQLException
+	{
 		this.id = rs.getInt("id");
-		this.description = rs.getString("name");
-		this.field2 = rs.getString("field2");
-		this.field3  = rs.getInt("field3");
+		this.address_id = rs.getInt("address_id");
+		this.open = rs.getBoolean("open");
+		this.title = rs.getString("title");
+		this.description = rs.getString("description");
+		this.time = rs.getTime("time");
 	}
 
-	/**
-	 * HINT: In eclipse, use Alt + Shirt + S menu and choose:
-	 * "Generate Getters and Setters to auto-magically generate
-	 * the getters. 
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	public int getId() {
+	public int getId()
+	{
 		return id;
 	}
 
-	public String getField2() {
-		return field2;
+	public int getAddress_id()
+	{
+		return address_id;
 	}
 
-	public int getField3() {
-		return field3;
-	}	
+	public boolean getOpen()
+	{
+		return open;
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public Time getTime()
+	{
+		return time;
+	}
+
+	public Address getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(Address address)
+	{
+		this.address = address;
+	}
+	
+	public String getStreetWithNumber()
+	{
+		if(this.address == null)
+		{
+			return "";
+		}
+		else
+		{
+			return this.address.getStreet()+" "+this.address.getStreetNo();
+		}
+	}
 }
