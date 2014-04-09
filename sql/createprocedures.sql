@@ -1,3 +1,4 @@
+drop procedure if exists toggle_case_open;
 drop procedure if exists get_link;
 drop procedure if exists get_type;
 drop procedure if exists get_links_for_case;
@@ -26,3 +27,4 @@ create procedure get_type( in type_id int ) select * from alltypes where alltype
 create procedure get_link( in case_id int, in poi_id int, in type_id int ) 
 	select * from alllinks 
 	where alllinks.case_id = case_id and alllinks.poi_id = poi_id and alllinks.type_id = type_id;
+create procedure toggle_case_open( in case_id int ) update `case` set open= !open where id = case_id;

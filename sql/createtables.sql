@@ -24,7 +24,9 @@ create table `case` ( id int auto_increment primary key,
 	title nvarchar(255) not null, 
 	description nvarchar(2000) not null, 
 	time datetime not null,
-	foreign key(address_id) references address(id) on delete cascade);
+	creator nvarchar(255) not null,
+	foreign key(address_id) references address(id) on delete cascade,
+	foreign key(creator) references `user`(name) on delete cascade);
 
 create table poi ( id int auto_increment primary key, 
 	name nvarchar(255) not null, 

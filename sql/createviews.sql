@@ -7,15 +7,15 @@ drop view if exists oldestcases;
 drop view if exists newestcases;
 drop view if exists allcases;
 
-create view allcases (id, title, description, time, address_id, open) 
-	as select id, title, description, time, address_id, open from `case`;
+create view allcases (id, title, description, time, address_id, open, creator) 
+	as select id, title, description, time, address_id, open, creator from `case`;
 
-create view newestcases ( id, title, description, time, address_id, open) 
+create view newestcases ( id, title, description, time, address_id, open, creator) 
 	as select * from allcases where open = TRUE
 	order by time desc
 	limit 1;
 
-create view oldestcases ( id, title, description, time, address_id, open) 
+create view oldestcases ( id, title, description, time, address_id, open, creator) 
 	as select * from allcases where open = TRUE
 	order by time
 	limit 1;

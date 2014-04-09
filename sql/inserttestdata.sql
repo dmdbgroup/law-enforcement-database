@@ -14,8 +14,8 @@ insert into user values ("andreas", "asdf");
 insert into address (country, zipcode, city, street, streetno) values ("switzerland", 2563, "Ipsach", "Römermatte", 5);
 insert into address (country, zipcode, city, street, streetno) values ("switzerland", 8000, "Zürich", "Hauptstrasse", 33);
 
-insert into `case` (open, title, description, address_id, time) select TRUE, "case 1", "description 1", a.id, "2011-12-18 13:17:17" from address a where a.street = "Römermatte";
-insert into `case` (open, title, description, address_id, time) select TRUE, "case 2", "description 2", a.id, "2013-12-18 13:17:17" from address a where a.street = "Hauptstrasse";
+insert into `case` (open, title, description, address_id, time, creator) select TRUE, "case 1", "description 1", a.id, "2011-12-18 13:17:17", "cyrill" from address a where a.street = "Römermatte";
+insert into `case` (open, title, description, address_id, time, creator) select TRUE, "case 2", "description 2", a.id, "2013-12-18 13:17:17", "andreas" from address a where a.street = "Hauptstrasse";
 
 insert into poi (name, birthdate) values ( "alex", "2013-12-19");
 insert into poi (name, birthdate) values ( "jimmy", "2013-12-20");
