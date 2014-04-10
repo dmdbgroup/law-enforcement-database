@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ch.ethz.inf.dbproject.util.BeforeRequest;
+
 /**
  * Servlet implementation class HomePage
  */
@@ -28,6 +30,7 @@ public final class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		BeforeRequest.execute(request);
 		this.getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);	        
 	}
 }

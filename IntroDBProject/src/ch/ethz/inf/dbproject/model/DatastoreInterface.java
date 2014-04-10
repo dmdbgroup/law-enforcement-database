@@ -407,5 +407,14 @@ public final class DatastoreInterface
 		}
 	}
 	
-
+	public final void removeLink(int case_id, int poi_id) {
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("DELETE FROM is_linked_to WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}
+	}
 }

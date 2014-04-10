@@ -92,4 +92,8 @@ public class Conviction
 	{
 		this.caseObject = caseObject;
 	}
+	
+	public String getDeleteButton() {
+		return "<a href=\"Link?case_id=\""+case_id+"\"&poi_id=\""+poi_id+"\">delete</a>";
+	}
 }

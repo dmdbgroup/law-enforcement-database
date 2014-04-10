@@ -15,6 +15,7 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -45,6 +46,7 @@ public final class CaseServlet extends HttpServlet {
 	 */
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
+		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
 
 		final String idString = request.getParameter("id");
@@ -58,7 +60,7 @@ public final class CaseServlet extends HttpServlet {
 
 			// Check if a toggleOpen request was sent
 			final String toggleOpen = request.getParameter("action");
-			if("toggleOpen".equals(toggleOpen));
+			if("toggleOpen".equals(toggleOpen))
 			{
 				dbInterface.toggleCaseOpen(id);
 			}
@@ -70,12 +72,13 @@ public final class CaseServlet extends HttpServlet {
 
 			session.setAttribute("caseTable", caseTable(aCase));	
 			session.setAttribute("notesTable", notesTable(notes));
-			session.setAttribute("convictionsTable", convictionTable(convictions));
+			session.setAttribute("convictionsTable", convictionTable(convictions, (UserManagement.getCurrentlyLoggedInUser(session)!=null), aCase));
 			
 			
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 			this.getServletContext().getRequestDispatcher("/Cases.jsp").forward(request, response);
+			return;
 		}
 
 		this.getServletContext().getRequestDispatcher("/Case.jsp").forward(request, response);
@@ -125,7 +128,7 @@ public final class CaseServlet extends HttpServlet {
 		return table;
 	}
 	
-	private BeanTableHelper<Conviction> convictionTable(final List<Conviction> convictions)
+	private BeanTableHelper<Conviction> convictionTable(final List<Conviction> convictions, boolean logged_in, Case a_case)
 	{
 		/*******************************************************
 		 * Construct a table to present all notes of a case
@@ -140,9 +143,13 @@ public final class CaseServlet extends HttpServlet {
 		table.addBeanColumn("name", "personOfInterest");
 		table.addBeanColumn("category", "category");
 		table.addBeanColumn("date", "date");
-		table.addBeanColumn("end date", "endDate");
-
+		if (!a_case.getOpen()) {
+			table.addBeanColumn("end date", "endDate");
+		}
 		table.addObjects(convictions);
+		if (logged_in && a_case.getOpen()) {
+			table.addBeanColumn("remove suspect", "deleteButton");
+		}
 		
 		return table;
 	}
