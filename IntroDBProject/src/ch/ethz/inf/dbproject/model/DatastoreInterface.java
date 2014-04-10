@@ -211,5 +211,148 @@ public final class DatastoreInterface
 			return null;
 		}
 	}
+	
+	public final boolean userExists(String username, String password) throws SQLException
+	{
+		boolean result = false;
+		try {
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("select * from user where name = \"" + username + "\" and password = \"" + password + "\";");
+			if (!rs.next())
+			{
+				result = false;
+			} else
+			{
+				result = true;
+			}
+		}	
+		catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		return result;
+	}
+	
+	public final boolean usernameExists(String username) throws SQLException
+	{
+		boolean result = false;
+		try {
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("select * from user where name = \"" + username + "\";");
+			if (!rs.next())
+			{
+				result = false;
+			} else
+			{
+				result = true;
+			}
+		}	
+		catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		return result;
+	}
+	
+	public final void addUser(String username, String password) throws SQLException
+	{
+		try {
+			final Statement stmt = this.sqlConnection.createStatement();
+			System.out.println("insert into user (name, password) values (\"" + username + "\", \"" + password + "\");");
+			stmt.execute("insert into user (name, password) values (\"" + username + "\", \"" + password + "\");");
+			
+		}	
+		catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public final List<PersonOfInterest> getAllPoi(){
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("select * from allpoi");
+			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
+			while (rs.next()){
+				PersonOfInterest p = new PersonOfInterest(rs);
+				pois.add(p);
+			}
+			rs.close();
+			stmt.close();
+			return pois;		
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public final List<Category> getAllCategories(){
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("select * from alltypes");
+			final List<Category> cats = new ArrayList<Category>();
+			while (rs.next()){
+				Category c = new Category(rs);
+				cats.add(c);
+			}
+			rs.close();
+			stmt.close();
+			return cats;		
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public final List<PersonOfInterest> getAllUnsuspectedPois(int case_id){
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("SELECT p1.id, p1.name, p1.birthdate from poi p1 WHERE p1.id NOT IN (SELECT p2.id FROM poi AS p2 JOIN is_linked_to AS il ON p2.id = il.poi_id WHERE il.case_id = \"" + case_id + "\" GROUP BY p2.id)"); 
+			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
+			while (rs.next()){
+				PersonOfInterest p = new PersonOfInterest(rs);
+				pois.add(p);
+			}
+			rs.close();
+			stmt.close();
+			return pois;		
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public final int addCategory(String name){
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT name FROM type WHERE name = \""+name+"\"");
+			if (!rs.next()) stmt.execute("INSERT INTO type (name) VALUES (\""+name+"\")");
+			rs.close();
+			rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+			int r = rs.getInt("id");
+			rs.close();
+			stmt.close();
+			return r;		
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public final void addLink(int poi_id, int case_id, int type_id) {
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("INSERT INTO is_linked_to (poi_id, case_id, type_id, time) VALUES (\""+poi_id+"\", \""+case_id+"\", \""+type_id+"\", \"2013-02-23 00:00:00\")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
 
 }

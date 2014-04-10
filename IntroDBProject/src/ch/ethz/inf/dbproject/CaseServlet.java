@@ -15,6 +15,7 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -38,7 +39,8 @@ public final class CaseServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
+		
+		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
 
 		final String idString = request.getParameter("id");
@@ -47,8 +49,8 @@ public final class CaseServlet extends HttpServlet {
 		}
 
 		try {
-
 			final Integer id = Integer.parseInt(idString);
+			session.setAttribute("id", id);
 			final Case aCase = this.dbInterface.getCaseById(id);
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);

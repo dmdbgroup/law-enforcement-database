@@ -39,6 +39,11 @@ public class PersonOfInterest
 		return birthday;
 	}
 	
+	public String getCheckBox()
+	{
+		return "<input type=\"radio\" name=\"poi\" value = \"" + id + "\">" + name + " " + birthday + "</input>";
+	}
+	
 	public String toString()
 	{
 		return name;

@@ -8,7 +8,6 @@ import java.sql.SQLException;
  */
 public final class Category
 {
-
 	private final int id;
 	private final String name;
 
@@ -34,8 +33,14 @@ public final class Category
 		return name;
 	}
 	
+	public final String getRadioBox()
+	{
+		return "<input type=\"radio\" name=\"category\" value = \"" + id + "\">" + name + "</input>";
+	}
+	
 	public String toString()
 	{
 		return name;
 	}
+
 }

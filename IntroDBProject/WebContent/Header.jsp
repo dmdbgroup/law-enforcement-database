@@ -17,7 +17,7 @@
 			<tr>
 				<th id="masterHeader" colspan="2">
 					<h1>Law Enforcement Project</h1>
-					Project by Cyrill Krähenbühl, Alexander Peiker und Andreas Hess; 
+					Project by Cyrill Kr&aumlhenb&uumlhl, Alexander Peiker und Andreas Hess; 
 				</th>
 			</tr>
 			<tr id="masterContent">
@@ -32,12 +32,9 @@
 					<div class="menuDiv2"><a href="Cases?filter=recent">Recent</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=oldest">Oldest Unsolved</a></div>
 					<div class="menuDiv1">Categories</div>
-					<div class="menuDiv2"><a href="Cases?category=personal">Personal Crimes</a></div>
-					<div class="menuDiv3"><a href="Cases?category=assault">Assault</a></div>
-					<div class="menuDiv3"><a href="Cases?category=other">Other</a></div>
-					<div class="menuDiv2"><a href="Cases?category=property">Property Crimes</a></div>
-					<div class="menuDiv3"><a href="Cases?category=theft">Theft</a></div>
-					<div class="menuDiv3"><a href="Cases?category=other">Other</a></div>
+					<% if (session.getAttribute("catmenu") != null) { %>
+					<%=session.getAttribute("catmenu") %>
+					<% } %>
 					<div class="menuDiv1"><a href="Search">Search</a></div>
 					<div class="menuDiv1"><a href="User">User Profile</a></div>
 					

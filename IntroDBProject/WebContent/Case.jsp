@@ -30,6 +30,8 @@ if (user != null) {
 }
 %>
 
+<a href="Link?case_id=<%=session.getAttribute("id")%>">Link Persons of Interest to this case</a></div>
+
 <h2>Notes</h2>
 
 <%=session.getAttribute("notesTable")%>
