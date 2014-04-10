@@ -94,6 +94,6 @@ public class Conviction
 	}
 	
 	public String getDeleteButton() {
-		return "<a href=\"Link?case_id=\""+case_id+"\"&poi_id=\""+poi_id+"\">delete</a>";
+		return "<a href=\"Case?action=delete_link&id="+case_id+"&poi_id="+poi_id+"\">delete</a>";
 	}
 }

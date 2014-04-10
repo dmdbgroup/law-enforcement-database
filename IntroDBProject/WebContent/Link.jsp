@@ -4,9 +4,6 @@
 <h1>Links</h1>
 
 <hr/>
-<% if (session.getAttribute("message") != null) {%>
-<p><%=session.getAttribute("message")%></p>
-<% } %>
 <form action="Link" method="get">
 	
 	<input type="hidden" name="case_id" value="<%=session.getAttribute("case_id")%>" />

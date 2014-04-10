@@ -75,7 +75,7 @@ public final class UserServlet extends HttpServlet {
 					session.setAttribute(SESSION_USER_LOGGED_IN, true);
 				}
 				else {
-					session.setAttribute("wrongCombination", "true");
+					session.setAttribute("message", "Wrong combination, please try again.");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -95,7 +95,7 @@ public final class UserServlet extends HttpServlet {
 			// Store this user into the session
 			try {
 				if (dbInterface.usernameExists(username)) {
-					session.setAttribute("alreadyTaken", "true");
+					session.setAttribute("message", "Username already exists. Please choose another one.");
 					this.getServletContext().getRequestDispatcher("/Registration.jsp").forward(request, response);
 					return;
 				}

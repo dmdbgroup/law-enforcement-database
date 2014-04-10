@@ -35,7 +35,9 @@
 					<div class="menuDiv2"><a href="Cases?filter=recent">Recent</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=oldest">Oldest Unsolved</a></div>
 					<div class="menuDiv1">Categories</div>
+					<% if (session.getAttribute("catmenu") != null) { %>
 					<%=session.getAttribute("catmenu")%>
+					<% } %>
 					<div class="menuDiv1"><a href="Search">Search</a></div>
 					<div class="menuDiv1"><a href="User">User Profile</a></div>
 					

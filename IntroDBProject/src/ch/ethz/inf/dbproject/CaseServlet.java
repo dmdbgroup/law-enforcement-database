@@ -52,6 +52,7 @@ public final class CaseServlet extends HttpServlet {
 		final String idString = request.getParameter("id");
 		if (idString == null) {
 			this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
+			return;
 		}
 
 		try {
@@ -59,10 +60,17 @@ public final class CaseServlet extends HttpServlet {
 			session.setAttribute("case_id", id);
 
 			// Check if a toggleOpen request was sent
-			final String toggleOpen = request.getParameter("action");
-			if("toggleOpen".equals(toggleOpen))
+			final String action = request.getParameter("action");
+			if("toggleOpen".equals(action))
 			{
 				dbInterface.toggleCaseOpen(id);
+			}
+			else if ("delete_link".equals(action)){
+				String poi_id_string = request.getParameter("poi_id");
+				if (poi_id_string != null && !poi_id_string.equals("")) {
+					dbInterface.removeLink(id, Integer.parseInt(poi_id_string));
+				}
+				
 			}
 
 			final Case aCase = this.dbInterface.getCaseById(id);

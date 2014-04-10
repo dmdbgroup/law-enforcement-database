@@ -3,9 +3,6 @@
 <%@ include file="Header.jsp" %>
 
 <h2>Registration Form</h2>
-	<% if (session.getAttribute("alreadyTaken") == "true") { %>
-		<p>Username already exists. Please choose another one.</p>
-	<%} %>
 
 	<form action="User" method="get">
 	<input type="hidden" name="action" value="register" />
