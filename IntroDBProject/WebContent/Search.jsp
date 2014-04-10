@@ -5,7 +5,18 @@
 
 <hr/>
 
-<form method="get" action="Search">
+<form method="get" action="Cases">
+<div>
+	<input type="hidden" name="filter" value="title" />
+	Search By Title:
+	<input type="text" name="titleTerm" />
+	<input type="submit" value="Search" title="Search by Title" />
+</div>
+</form>
+
+<hr/>
+
+<form method="get" action="Cases">
 <div>
 	<input type="hidden" name="filter" value="description" />
 	Search By Description:
@@ -16,31 +27,14 @@
 
 <hr/>
 
-<form method="get" action="Search">
+<form method="get" action="Cases">
 <div>
 	<input type="hidden" name="filter" value="category" />
 	Search By Category:
-	<input type="text" name="category" />
+	<input type="text" name="categoryTerm" />
 	<input type="submit" value="Search" title="Search by Category" />
 </div>
 </form>
-
-<hr/>
-
-<form method="get" action="Search">
-<div>
-	<input type="hidden" name="filter" value="attribute" />
-	Search By Attribute:
-	<input type="text" name="attribute" />
-	<input type="submit" value="Search" title="Search by Attribute" />
-</div>
-</form>
-
-<hr/>
-<%  
-	//TODO Display search results 
-	// session.getAttribute("results");
-%>
 
 <hr/>
 

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
-import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 /**
@@ -35,8 +34,7 @@ public final class CasesServlet extends HttpServlet {
 	 */
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) 
 			throws ServletException, IOException {
-		
-		BeforeRequest.execute(request);
+
 		final HttpSession session = request.getSession(true);
 
 		/*******************************************************
@@ -54,6 +52,7 @@ public final class CasesServlet extends HttpServlet {
 		table.addBeanColumn("Case Description", "description");
 		table.addBeanColumn("location", "streetWithNumber");
 		table.addBeanColumn("time", "time");
+		table.addBeanColumn("Creator", "creator");
 
 		/*
 		 * Column 4: This is a special column. It adds a link to view the
@@ -69,42 +68,44 @@ public final class CasesServlet extends HttpServlet {
 
 		// The filter parameter defines what to show on the Projects page
 		final String filter = request.getParameter("filter");
-		final String category = request.getParameter("category");
+		final String category_id_string = request.getParameter("category_id");
 
-		if (filter == null && category == null) {
+		if (filter == null && category_id_string == null) {
 
 			// If no filter is specified, then we display all the cases!
 			table.addObjects(this.dbInterface.getAllCases());
 
-		} else if (category != null) {
+		} else if (category_id_string != null) {
 
-			// TODO implement this!
-			//table.addObjects(this.dbInterface.getProjectsByCategory(category));
+			// filter cases by category name
+			table.addObjects(this.dbInterface.getProjectsByCategory(Integer.parseInt(category_id_string.trim())));
 			
 		} else if (filter != null) {
 		
 			if(filter.equals("open")) {
-
-				// TODO implement this!
-				//table.addObjects(this.dbInterface.getOpenCases());
+				table.addObjects(this.dbInterface.getCasesByStatus(true));
 
 			} else if (filter.equals("closed")) {
-
-				// TODO implement this!
-				// table.addObjects(this.dbInterface.getClosedCases());
+				table.addObjects(this.dbInterface.getCasesByStatus(false));
 
 			} else if (filter.equals("recent")) {
-
-				// TODO implement this!
-				// table.addObjects(this.dbInterface.getMostRecentCases());
-
+				table.addObjects(this.dbInterface.getMostRecentCases());
 			}
 			
 			else if (filter.equals("oldest")) {
-
-				// TODO implement this!
-				// table.addObjects(this.dbInterface.getOldestUnsolvedCases());
-
+				table.addObjects(this.dbInterface.getOldestUnsolvedCases());
+			}
+			
+			else if(filter.equals("description")) {
+				table.addObjects(this.dbInterface.searchCasesByDescription(request.getParameter("description")));
+			}
+			
+			else if(filter.equals("category")) {
+				table.addObjects(this.dbInterface.searchCasesBySimilarCategory(request.getParameter("categoryTerm")));
+			}
+			
+			else if(filter.equals("title")) {
+				table.addObjects(this.dbInterface.searchCasesBySimilarTitle(request.getParameter("titleTerm")));
 			}
 			
 		} else {

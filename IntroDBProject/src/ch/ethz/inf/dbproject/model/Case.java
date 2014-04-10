@@ -9,6 +9,7 @@ public final class Case
 
 	private final int id;
 	private final int address_id;
+	private final String creator;
 	private final boolean open;
 	private final String title;
 	private final String description;
@@ -18,11 +19,12 @@ public final class Case
 	/**
 	 * Construct a new case.
 	 */
-	public Case(final int id, final int address_id, final boolean open,
+	public Case(final int id, final int address_id, final String creator, final boolean open,
 			final String title, final String description, final Time time)
 	{
 		this.id = id;
 		this.address_id = address_id;
+		this.creator = creator;
 		this.open = open;
 		this.title = title;
 		this.description = description;
@@ -33,6 +35,7 @@ public final class Case
 	{
 		this.id = rs.getInt("id");
 		this.address_id = rs.getInt("address_id");
+		this.creator = rs.getString("creator");
 		this.open = rs.getBoolean("open");
 		this.title = rs.getString("title");
 		this.description = rs.getString("description");
@@ -89,5 +92,10 @@ public final class Case
 		{
 			return this.address.getStreet()+" "+this.address.getStreetNo();
 		}
+	}
+
+	public String getCreator()
+	{
+		return creator;
 	}
 }

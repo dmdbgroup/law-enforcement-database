@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="ch.ethz.inf.dbproject.model.DatastoreInterface"%>
+<%@page import="ch.ethz.inf.dbproject.model.Category"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -17,7 +20,7 @@
 			<tr>
 				<th id="masterHeader" colspan="2">
 					<h1>Law Enforcement Project</h1>
-					Project by Cyrill Kr&aumlhenb&uumlhl, Alexander Peiker und Andreas Hess; 
+					Project by Cyrill Kr�henb�hl, Alexander Peiker und Andreas Hess; 
 				</th>
 			</tr>
 			<tr id="masterContent">
@@ -32,9 +35,15 @@
 					<div class="menuDiv2"><a href="Cases?filter=recent">Recent</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=oldest">Oldest Unsolved</a></div>
 					<div class="menuDiv1">Categories</div>
-					<% if (session.getAttribute("catmenu") != null) { %>
-					<%=session.getAttribute("catmenu") %>
-					<% } %>
+					<%
+						DatastoreInterface dbInterface = new DatastoreInterface();
+						List<Category> cats = dbInterface.getAllCategories();
+						for(Category cat : cats)
+						{
+							%>
+							<div class="menuDiv2"><a href="Cases?category_id=<%=cat.getId()%>"><%=cat.getName()%></a></div><%
+						}
+					%>
 					<div class="menuDiv1"><a href="Search">Search</a></div>
 					<div class="menuDiv1"><a href="User">User Profile</a></div>
 					

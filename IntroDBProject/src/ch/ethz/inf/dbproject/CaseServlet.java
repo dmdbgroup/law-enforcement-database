@@ -15,7 +15,6 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
-import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -27,20 +26,25 @@ public final class CaseServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private final DatastoreInterface dbInterface = new DatastoreInterface();
-
+	private Integer id;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public CaseServlet() {
 		super();
 	}
+	
+	private String getQuotedId()
+	{
+		return "\""+id+"\"";
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		
-		BeforeRequest.execute(request);
+
 		final HttpSession session = request.getSession(true);
 
 		final String idString = request.getParameter("id");
@@ -49,8 +53,16 @@ public final class CaseServlet extends HttpServlet {
 		}
 
 		try {
-			final Integer id = Integer.parseInt(idString);
-			session.setAttribute("id", id);
+			id = Integer.parseInt(idString);
+			session.setAttribute("case_id", id);
+
+			// Check if a toggleOpen request was sent
+			final String toggleOpen = request.getParameter("action");
+			if("toggleOpen".equals(toggleOpen));
+			{
+				dbInterface.toggleCaseOpen(id);
+			}
+
 			final Case aCase = this.dbInterface.getCaseById(id);
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
@@ -86,6 +98,7 @@ public final class CaseServlet extends HttpServlet {
 		table.addBeanColumn("Case Description", "description");
 		table.addBeanColumn("location", "streetWithNumber");
 		table.addBeanColumn("time", "time");
+		table.addBeanColumn("Creator", "creator");
 
 		table.addObject(c);
 		table.setVertical(true);

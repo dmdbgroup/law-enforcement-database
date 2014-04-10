@@ -18,15 +18,6 @@ import ch.ethz.inf.dbproject.database.MySQLConnection;
 public final class DatastoreInterface
 {
 
-	private final static List<Case> staticCaseList = new ArrayList<Case>();
-	static
-	{
-		staticCaseList.add(new Case(0, 0, true, "title 1", "Noise pollution..",
-				new Time(123)));
-		staticCaseList.add(new Case(1, 1, true, "title 2",
-				"Highway overspeed...", new Time(123456)));
-	}
-
 	private Connection sqlConnection;
 
 	public DatastoreInterface()
@@ -62,29 +53,7 @@ public final class DatastoreInterface
 
 	public final List<Case> getAllCases()
 	{
-		try
-		{
-			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from allcases");
-
-			final List<Case> cases = new ArrayList<Case>();
-			while (rs.next())
-			{
-				Case c = new Case(rs);
-				c = complementCase(c);
-				cases.add(c);
-			}
-
-			rs.close();
-			stmt.close();
-
-			return cases;
-
-		} catch (final SQLException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
+		return getCaseList("select * from allcases");
 	}
 
 	private final Case complementCase(final Case c) throws SQLException
@@ -211,6 +180,109 @@ public final class DatastoreInterface
 			return null;
 		}
 	}
+
+	public void toggleCaseOpen(int id)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("call toggle_case_open("
+					+ id + ")");
+
+			rs.close();
+			stmt.close();
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
+	public final List<Case> getProjectsByCategory(int category)
+	{
+		return getCaseList("call search_cases_by_type_of_conviction(\""
+				+ category + "\")");
+	}
+
+	public final List<Case> getCasesByStatus(Boolean open)
+	{
+		return getCaseList("call search_cases_by_status(" + open + ")");
+	}
+
+	private final List<Case> getCaseList(String query)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery(query);
+
+			final List<Case> cases = new ArrayList<Case>();
+			while (rs.next())
+			{
+				Case c = new Case(rs);
+				c = complementCase(c);
+				cases.add(c);
+			}
+
+			rs.close();
+			stmt.close();
+
+			return cases;
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public final List<Case> getMostRecentCases()
+	{
+		return getCaseList("select * from newestcases");
+	}
+
+	public final List<Case> getOldestUnsolvedCases()
+	{
+		return getCaseList("select * from oldestcases");
+	}
+
+	public final List<Case> searchCasesByDescription(String parameter)
+	{
+		return getCaseList("call search_cases_by_similar_description(\"" + parameter
+				+ "\")");
+	}
+
+	public final List<Category> getAllCategories()
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("select * from alltypes");
+			final List<Category> cats = new ArrayList<Category>();
+			while (rs.next())
+			{
+				Category c = new Category(rs);
+				cats.add(c);
+			}
+			rs.close();
+			stmt.close();
+			return cats;
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	public final List<Case> searchCasesBySimilarCategory(String parameter)
+	{
+		return getCaseList("call search_cases_by_similar_type_of_conviction(\""+parameter+"\")");
+	}
+
+	public final List<Case> searchCasesBySimilarTitle(String parameter)
+	{
+		return getCaseList("call search_cases_by_similar_title(\""+parameter+"\")");
+	}
 	
 	public final boolean userExists(String username, String password) throws SQLException
 	{
@@ -280,25 +352,6 @@ public final class DatastoreInterface
 			rs.close();
 			stmt.close();
 			return pois;		
-		}
-		catch (final SQLException ex){
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	
-	public final List<Category> getAllCategories(){
-		try{
-			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from alltypes");
-			final List<Category> cats = new ArrayList<Category>();
-			while (rs.next()){
-				Category c = new Category(rs);
-				cats.add(c);
-			}
-			rs.close();
-			stmt.close();
-			return cats;		
 		}
 		catch (final SQLException ex){
 			ex.printStackTrace();

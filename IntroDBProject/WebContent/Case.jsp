@@ -8,10 +8,21 @@
 
 <%=session.getAttribute("caseTable")%>
 
-<%
-	//TODO close or reopen the case
-%>
+<br/>
 
+<% if (user != null) { %>
+<form method="get" action="Case">
+<div>
+	<input type="hidden" name="action" value="toggleOpen" />
+	<input type="hidden" name="id" value=<%=session.getAttribute("case_id")%> />
+	<input type="submit" value="Toggle open/closed" title="Toggle open/closed" />
+</div>
+</form>
+<% } %>
+
+<h2>Notes</h2>
+
+<%=session.getAttribute("notesTable")%>
 
 <%
 if (user != null) {
@@ -30,14 +41,12 @@ if (user != null) {
 }
 %>
 
-<a href="Link?case_id=<%=session.getAttribute("id")%>">Link Persons of Interest to this case</a></div>
-
-<h2>Notes</h2>
-
-<%=session.getAttribute("notesTable")%>
-
 <h2>Convictions</h2>
 
 <%=session.getAttribute("convictionsTable")%>
+
+<% if (user != null) { %>
+<a href="Link?case_id=<%=session.getAttribute("case_id")%>">Link Persons of Interest to this case</a>
+<% } %>
 
 <%@ include file="Footer.jsp"%>
