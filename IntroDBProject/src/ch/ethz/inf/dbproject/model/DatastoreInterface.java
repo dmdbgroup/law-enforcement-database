@@ -161,6 +161,33 @@ public final class DatastoreInterface
 			return null;
 		}
 	}
+	
+	public final List<Conviction> getConvictionsForPoiId(int id)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("call get_links_for_poi("
+					+ id + ")");
+			final List<Conviction> convictions = new ArrayList<Conviction>();
+			while (rs.next())
+			{
+				Conviction conviction = new Conviction(rs);
+				conviction = complementConviction(conviction);
+				convictions.add(conviction);
+			}
+
+			rs.close();
+			stmt.close();
+
+			return convictions;
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
 
 	public void toggleCaseOpen(int id)
 	{
@@ -440,6 +467,19 @@ public final class DatastoreInterface
 			ex.printStackTrace();
 		}	
 	}
+	
+	public void addPoiComment(Integer poi_id, String text)
+	{
+		System.out.println("addPoiComment("+poi_id+",\""+text+")");
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call add_poi_note(" +""+poi_id+"," +"\""+text+"\")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}	
+	}
 
 	public void deleteCase(Integer id)
 	{
@@ -479,7 +519,7 @@ public final class DatastoreInterface
 		}
 	}
 	//Added
-	public final List<PersonOfInterestComment> getNotesForPoiId(List<Integer> ids)
+	public final List<PersonOfInterestComment> getNotesForPoiIds(List<Integer> ids)
 	{
 		try
 		{
@@ -498,6 +538,32 @@ public final class DatastoreInterface
 			rs.close();
 			stmt.close();
 			}
+			return notes;
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public final List<PoiComment> getNotesForPoiId(int id)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("call get_notes_for_poi("
+					+ id + ")");
+
+			final List<PoiComment> notes = new ArrayList<PoiComment>();
+			while (rs.next())
+			{
+				notes.add(new PoiComment(rs));
+			}
+
+			rs.close();
+			stmt.close();
+
 			return notes;
 
 		} catch (final SQLException ex)
@@ -529,6 +595,31 @@ public final class DatastoreInterface
 		}
 		catch (final SQLException ex){
 			ex.printStackTrace();
+		}
+	}
+	
+	public final PersonOfInterest getPoiById(final int id)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery("call get_poi(" + id + ")");
+
+			PersonOfInterest c = null;
+			if (rs.next())
+			{
+				c = new PersonOfInterest(rs);
+			}
+
+			rs.close();
+			stmt.close();
+
+			return c;
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
 		}
 	}
 	

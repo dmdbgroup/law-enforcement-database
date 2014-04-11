@@ -3,6 +3,7 @@ drop procedure if exists delete_poi;
 drop procedure if exists get_notes_for_poi;
 drop procedure if exists delete_case;
 drop procedure if exists add_case_note;
+drop procedure if exists add_poi_note;
 drop procedure if exists add_case;
 drop procedure if exists toggle_case_open;
 drop procedure if exists get_link;
@@ -17,6 +18,8 @@ drop procedure if exists search_cases_by_date_of_conviction;
 drop procedure if exists search_poi_by_name;
 drop procedure if exists search_cases_by_status;
 
+
+create procedure add_poi_note ( in poi_id int, in text nvarchar(2000) ) insert into poi_note ( poi_id, text ) values ( poi_id, text );
 create procedure search_cases_by_status ( in is_open boolean ) select * from allcases where open = is_open;
 create procedure search_poi_by_name ( in contains nvarchar(255) ) select * from allpoi where name like concat('%', contains, '%');
 create procedure search_cases_by_date_of_conviction ( in date date ) select * from allcases where date(time) = date;

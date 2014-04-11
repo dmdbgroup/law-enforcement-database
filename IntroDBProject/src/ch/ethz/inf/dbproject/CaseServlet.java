@@ -99,7 +99,7 @@ public final class CaseServlet extends HttpServlet {
 				}
 			}
 
-						final Case aCase = this.dbInterface.getCaseById(id);
+			final Case aCase = this.dbInterface.getCaseById(id);
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
 
