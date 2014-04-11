@@ -19,8 +19,8 @@ create view oldestcases ( id, title, description, time, address, open, creator)
 	order by time
 	limit 1;
 
-create view allpoi ( id, name, birthdate )
-	as select id, name, birthdate from poi;
+create view allpoi ( id, firstname, surname, birthdate )
+	as select id, firstname, surname, birthdate from poi;
 
 create view allcasenotes ( id, case_id, text )
 	as select id, case_id, text from case_note;

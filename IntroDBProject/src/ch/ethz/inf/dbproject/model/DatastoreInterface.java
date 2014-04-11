@@ -1,6 +1,7 @@
 package ch.ethz.inf.dbproject.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -340,7 +341,7 @@ public final class DatastoreInterface
 	public final List<PersonOfInterest> getAllUnsuspectedPois(int case_id){
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("SELECT p1.id, p1.name, p1.birthdate from poi p1 WHERE p1.id NOT IN (SELECT p2.id FROM poi AS p2 JOIN is_linked_to AS il ON p2.id = il.poi_id WHERE il.case_id = \"" + case_id + "\" GROUP BY p2.id)"); 
+			final ResultSet rs = stmt.executeQuery("SELECT p1.id, p1.firstname, p1.surname, p1.birthdate from poi p1 WHERE p1.id NOT IN (SELECT p2.id FROM poi AS p2 JOIN is_linked_to AS il ON p2.id = il.poi_id WHERE il.case_id = \"" + case_id + "\" GROUP BY p2.id)"); 
 			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
 			while (rs.next()){
 				PersonOfInterest p = new PersonOfInterest(rs);
@@ -501,6 +502,31 @@ public final class DatastoreInterface
 		{
 			ex.printStackTrace();
 			return null;
+		}
+	}
+
+	public void deletePoi(Integer poi_id)
+	{
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call delete_poi("+poi_id+")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+
+	public void addPoi(String firstname, String surname, Date birthday)
+	{
+		System.out.println("addPoi("+firstname+","+surname+","+birthday+")");
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call add_poi(\""+firstname+"\",\""+surname+"\",\""+birthday+"\")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
 		}
 	}
 	

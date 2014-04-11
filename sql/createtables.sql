@@ -20,7 +20,8 @@ create table `case` ( id int auto_increment primary key,
 	foreign key(creator) references `user`(name) on delete cascade);
 
 create table poi ( id int auto_increment primary key, 
-	name nvarchar(255) not null, 
+	firstname nvarchar(255) not null, 
+	surname nvarchar(255) not null, 
 	birthdate date not null);
 
 create table type ( id int auto_increment primary key, 

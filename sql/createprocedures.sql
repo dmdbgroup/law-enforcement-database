@@ -1,3 +1,5 @@
+drop procedure if exists add_poi;
+drop procedure if exists delete_poi;
 drop procedure if exists get_notes_for_poi;
 drop procedure if exists delete_case;
 drop procedure if exists add_case_note;
@@ -38,3 +40,6 @@ create procedure add_case_note( in case_id int, in text nvarchar(2000) )
 	insert into case_note ( case_id, text ) values ( case_id, text );
 create procedure delete_case( in case_id int ) delete from `case` where id = case_id;
 create procedure get_notes_for_poi( in poi_id int ) select * from poi_note where id = poi_id;
+create procedure delete_poi( in poi_id int ) delete from poi where id = poi_id;
+create procedure add_poi( in firstname nvarchar(255), in surname nvarchar(255), in birthdate Date )
+	insert into poi ( firstname, surname, birthdate ) values ( firstname, surname, birthdate );
