@@ -36,7 +36,6 @@ public final class DatastoreInterface
 			if (rs.next())
 			{
 				c = new Case(rs);
-				c = complementCase(c);
 			}
 
 			rs.close();
@@ -54,24 +53,6 @@ public final class DatastoreInterface
 	public final List<Case> getAllCases()
 	{
 		return getCaseList("select * from allcases");
-	}
-
-	private final Case complementCase(final Case c) throws SQLException
-	{
-		Case result = c;
-		final Statement stmt = this.sqlConnection.createStatement();
-		final ResultSet rs = stmt.executeQuery("call get_address("
-				+ c.getAddress_id() + ")");
-		if (!rs.next())
-		{
-			System.out.println("Error: couldnt find address with id:"
-					+ c.getAddress_id());
-		} else
-		{
-			final Address a = new Address(rs);
-			result.setAddress(a);
-		}
-		return result;
 	}
 
 	public final List<CaseComment> getNotesForCaseId(int id)
@@ -220,7 +201,6 @@ public final class DatastoreInterface
 			while (rs.next())
 			{
 				Case c = new Case(rs);
-				c = complementCase(c);
 				cases.add(c);
 			}
 
@@ -405,6 +385,51 @@ public final class DatastoreInterface
 		catch (final SQLException ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	public final void addCase(String title, String description, Time time, String address, String creator, Boolean open)
+	{
+		System.out.println("addCase("+title+" "+description+" "+time+" "+time+" "+address+" "+creator+" "+open+")");
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call add_case(" +
+					"\""+title+"\"," +
+					"\""+description+"\"," +
+					"\""+time+"\"," +
+					"\""+address+"\"," +
+					"\""+creator+"\"," +
+					""+open+")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+
+	public void addCaseComment(Integer case_id, String text)
+	{
+		System.out.println("addCaseComment("+case_id+",\""+text+")");
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call add_case_note(" +""+case_id+"," +"\""+text+"\")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}	
+	}
+
+	public void deleteCase(Integer id)
+	{
+		System.out.println("deleteCase("+id+")");
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("call delete_case("+id+")");
+			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}	
 	}
 	
 

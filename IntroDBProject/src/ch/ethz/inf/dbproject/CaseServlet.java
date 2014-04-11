@@ -57,12 +57,23 @@ public final class CaseServlet extends HttpServlet {
 			session.setAttribute("case_id", id);
 
 			// Check if a toggleOpen request was sent
-			final String toggleOpen = request.getParameter("action");
-			if("toggleOpen".equals(toggleOpen));
+			final String action = request.getParameter("action");
+			if("toggleOpen".equals(action))
 			{
 				dbInterface.toggleCaseOpen(id);
 			}
-
+			else if("add_comment".equals(action))
+			{
+				String text = request.getParameter("comment");
+				dbInterface.addCaseComment(id,text);
+			}
+			else if("delete_case".equals(action))
+			{
+				dbInterface.deleteCase(id);
+				this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
+				return;
+			}
+			
 			final Case aCase = this.dbInterface.getCaseById(id);
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
@@ -71,7 +82,6 @@ public final class CaseServlet extends HttpServlet {
 			session.setAttribute("caseTable", caseTable(aCase));	
 			session.setAttribute("notesTable", notesTable(notes));
 			session.setAttribute("convictionsTable", convictionTable(convictions));
-			
 			
 		} catch (final Exception ex) {
 			ex.printStackTrace();
@@ -96,7 +106,7 @@ public final class CaseServlet extends HttpServlet {
 		table.addBeanColumn("Title", "title");
 		table.addBeanColumn("open", "open");
 		table.addBeanColumn("Case Description", "description");
-		table.addBeanColumn("location", "streetWithNumber");
+		table.addBeanColumn("location", "address");
 		table.addBeanColumn("time", "time");
 		table.addBeanColumn("Creator", "creator");
 

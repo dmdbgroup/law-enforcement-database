@@ -1,9 +1,8 @@
-drop table if exists user;
 drop table if exists case_note;
 drop table if exists poi_note;
 drop table if exists is_linked_to;
 drop table if exists `case`;
-drop table if exists address;
+drop table if exists user;
 drop table if exists poi;
 drop table if exists type;
 
@@ -11,21 +10,13 @@ drop table if exists type;
 create table user ( name nvarchar(255) not null primary key, 
 	password nvarchar(255) not null);
 
-create table address ( id int auto_increment primary key,
-	country nvarchar(255) not null,
-	zipcode int not null,
-	city nvarchar(255) not null,
-	street nvarchar(255) not null,
-	streetno int not null);
-
 create table `case` ( id int auto_increment primary key, 
-	address_id int,
+	address nvarchar(255) not null,
 	open boolean not null, 
 	title nvarchar(255) not null, 
 	description nvarchar(2000) not null, 
 	time datetime not null,
 	creator nvarchar(255) not null,
-	foreign key(address_id) references address(id) on delete cascade,
 	foreign key(creator) references `user`(name) on delete cascade);
 
 create table poi ( id int auto_increment primary key, 

@@ -1,6 +1,9 @@
 package ch.ethz.inf.dbproject;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
+import ch.ethz.inf.dbproject.model.User;
+import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 /**
@@ -50,7 +55,7 @@ public final class CasesServlet extends HttpServlet {
 		table.addBeanColumn("Title", "title");
 		table.addBeanColumn("open", "open");
 		table.addBeanColumn("Case Description", "description");
-		table.addBeanColumn("location", "streetWithNumber");
+		table.addBeanColumn("location", "address");
 		table.addBeanColumn("time", "time");
 		table.addBeanColumn("Creator", "creator");
 
@@ -63,14 +68,42 @@ public final class CasesServlet extends HttpServlet {
 				"Case?id=" 	/* This is the base url. The final url will be composed from the concatenation of this and the parameter below */, 
 				"id" 			/* For every case displayed, the ID will be retrieved and will be attached to the url base above */);
 
+		if((User) session.getAttribute(UserManagement.SESSION_USER) != null)
+		{
+			table.addLinkColumn(""	/* The header. We will leave it empty */,
+					"Delete Case" 	/* What should be displayed in every row */,
+					"Case?action=delete_case&id=" 	/* This is the base url. The final url will be composed from the concatenation of this and the parameter below */, 
+					"id" 			/* For every case displayed, the ID will be retrieved and will be attached to the url base above */);
+		}
 		// Pass the table to the session. This will allow the respective jsp page to display the table.
 		session.setAttribute("cases", table);
 
 		// The filter parameter defines what to show on the Projects page
+		final String action = request.getParameter("action");
 		final String filter = request.getParameter("filter");
 		final String category_id_string = request.getParameter("category_id");
 
-		if (filter == null && category_id_string == null) {
+		if("addcase".equals(action))
+		{
+			String title = request.getParameter("title");
+			String description = request.getParameter("description");
+			String timeString = request.getParameter("time");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			long ms = 0;
+			try
+			{
+				ms = sdf.parse(timeString).getTime();
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Time time = new Time(ms);
+			String address = request.getParameter("address");
+			String creator = request.getParameter("creator");
+			dbInterface.addCase(title, description, time, address, creator, true);
+			table.addObjects(this.dbInterface.getAllCases());
+		}
+		else if (filter == null && category_id_string == null) {
 
 			// If no filter is specified, then we display all the cases!
 			table.addObjects(this.dbInterface.getAllCases());

@@ -28,9 +28,11 @@
 if (user != null) {
 	// User is logged in. He can add a comment
 %>
+<br/>
 	<form action="Case" method="get">
 		<input type="hidden" name="action" value="add_comment" />
-		<input type="hidden" name="user_id" value="<%= user.getUsername() %>" />
+		<input type="hidden" name="user_id" value="<%= user.getName() %>" />
+		<input type="hidden" name="id" value=<%=session.getAttribute("case_id")%> />
 		Add Comment
 		<br />
 		<textarea rows="4" cols="50" name="comment"></textarea>

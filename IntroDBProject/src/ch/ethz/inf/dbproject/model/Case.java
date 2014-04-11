@@ -8,22 +8,22 @@ public final class Case
 {
 
 	private final int id;
-	private final int address_id;
+	// The address has the form: street nr, plz ort
+	private final String address;
 	private final String creator;
 	private final boolean open;
 	private final String title;
 	private final String description;
 	private final Time time;
-	private Address address;
 
 	/**
 	 * Construct a new case.
 	 */
-	public Case(final int id, final int address_id, final String creator, final boolean open,
+	public Case(final int id, final String address, final String creator, final boolean open,
 			final String title, final String description, final Time time)
 	{
 		this.id = id;
-		this.address_id = address_id;
+		this.address = address;
 		this.creator = creator;
 		this.open = open;
 		this.title = title;
@@ -34,7 +34,7 @@ public final class Case
 	public Case(final ResultSet rs) throws SQLException
 	{
 		this.id = rs.getInt("id");
-		this.address_id = rs.getInt("address_id");
+		this.address = rs.getString("address");
 		this.creator = rs.getString("creator");
 		this.open = rs.getBoolean("open");
 		this.title = rs.getString("title");
@@ -47,9 +47,9 @@ public final class Case
 		return id;
 	}
 
-	public int getAddress_id()
+	public String getAddress()
 	{
-		return address_id;
+		return address;
 	}
 
 	public boolean getOpen()
@@ -71,27 +71,10 @@ public final class Case
 	{
 		return time;
 	}
-
-	public Address getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(Address address)
-	{
-		this.address = address;
-	}
 	
 	public String getStreetWithNumber()
 	{
-		if(this.address == null)
-		{
-			return "";
-		}
-		else
-		{
-			return this.address.getStreet()+" "+this.address.getStreetNo();
-		}
+		return address;
 	}
 
 	public String getCreator()

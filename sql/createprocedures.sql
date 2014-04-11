@@ -1,3 +1,6 @@
+drop procedure if exists delete_case;
+drop procedure if exists add_case_note;
+drop procedure if exists add_case;
 drop procedure if exists toggle_case_open;
 drop procedure if exists get_link;
 drop procedure if exists get_type;
@@ -5,7 +8,6 @@ drop procedure if exists get_links_for_poi;
 drop procedure if exists get_links_for_case;
 drop procedure if exists get_notes_for_case;
 drop procedure if exists get_case;
-drop procedure if exists get_address;
 drop procedure if exists get_poi;
 drop procedure if exists search_cases_by_type_of_conviction;
 drop procedure if exists search_cases_by_date_of_conviction;
@@ -20,7 +22,6 @@ create procedure search_cases_by_type_of_conviction ( in type_name int )
 	from (`case` c inner join is_linked_to l on l.case_id = c.id) inner join type t on l.type_id = t.id
 	where t.id = type_name;
 create procedure get_poi( in poi_id int ) select * from allpoi where id = poi_id;
-create procedure get_address( in address_id int ) select * from alladdresses where id = address_id;
 create procedure get_case( in case_id int ) select * from allcases where id = case_id;
 create procedure get_notes_for_case( in case_id int ) select * from allcasenotes where allcasenotes.case_id = case_id;
 create procedure get_links_for_case( in case_id int ) select * from alllinks where alllinks.case_id = case_id;
@@ -30,3 +31,8 @@ create procedure get_link( in case_id int, in poi_id int, in type_id int )
 	select * from alllinks 
 	where alllinks.case_id = case_id and alllinks.poi_id = poi_id and alllinks.type_id = type_id;
 create procedure toggle_case_open( in case_id int ) update `case` set open= !open where id = case_id;
+create procedure add_case( in title nvarchar(255), in description nvarchar(2000), in time Time, in address nvarchar(255), in creator nvarchar(255), in open boolean )
+	insert into `case` ( title, description, time, address, creator, open ) values ( title, description, time, address, creator, open );
+create procedure add_case_note( in case_id int, in text nvarchar(2000) )
+	insert into case_note ( case_id, text ) values ( case_id, text );
+create procedure delete_case( in case_id int ) delete from `case` where id = case_id;
