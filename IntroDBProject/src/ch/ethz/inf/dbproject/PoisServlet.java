@@ -19,6 +19,7 @@ import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
 import ch.ethz.inf.dbproject.model.User;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 import ch.ethz.inf.dbproject.model.PersonOfInterestComment;
@@ -66,6 +67,7 @@ public final class PoisServlet extends HttpServlet{
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		final HttpSession session = request.getSession(true);
 
+		BeforeRequest.execute(request);
 		String action = request.getParameter("action");
 		String poi_id_string = request.getParameter("id");
 		if(poi_id_string != null)

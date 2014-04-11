@@ -17,6 +17,7 @@ import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
 import ch.ethz.inf.dbproject.model.PoiComment;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 
@@ -32,6 +33,7 @@ public final class PoiServlet extends HttpServlet{
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException{
 		final HttpSession session = request.getSession(true);
 		
+		BeforeRequest.execute(request);
 		final String idString = request.getParameter("id");
 		if (idString == null){
 			this.getServletContext().getRequestDispatcher("/PersonsOfInterest").forward(request,response);

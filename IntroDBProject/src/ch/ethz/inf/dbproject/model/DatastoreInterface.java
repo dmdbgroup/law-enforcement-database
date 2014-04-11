@@ -473,7 +473,7 @@ public final class DatastoreInterface
 		System.out.println("addPoiComment("+poi_id+",\""+text+")");
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			stmt.execute("call add_poi_note(" +""+poi_id+"," +"\""+text+"\")");
+			stmt.execute("call add_poi_note(\""+poi_id+"\",\""+text+"\")");
 			stmt.close();	
 		}
 		catch (final SQLException ex){
