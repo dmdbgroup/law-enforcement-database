@@ -385,6 +385,7 @@ public final class DatastoreInterface
 		}
 	}
 	
+<<<<<<< HEAD
 	public final void addCase(String title, String description, Time time, String address, String creator, Boolean open)
 	{
 		System.out.println("addCase("+title+" "+description+" "+time+" "+time+" "+address+" "+creator+" "+open+")");
@@ -397,34 +398,20 @@ public final class DatastoreInterface
 					"\""+address+"\"," +
 					"\""+creator+"\"," +
 					""+open+")");
-			stmt.close();	
-		}
-		catch (final SQLException ex){
-			ex.printStackTrace();
-		}
-	}
-
+=======
 	public final void removeLink(int case_id, int poi_id) {
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
 			stmt.execute("DELETE FROM is_linked_to WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
+>>>>>>> FETCH_HEAD
 			stmt.close();	
 		}
 		catch (final SQLException ex){
 			ex.printStackTrace();
 		}
 	}
-	
-	public final void updateConvictionEndDate(int case_id, int poi_id, String date) {
-		try{
-			final Statement stmt = this.sqlConnection.createStatement();
-			stmt.execute("UPDATE is_linked_to SET end_time = \""+date+"\" WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
-			stmt.close();
-		}
-		catch (final SQLException ex){
-			ex.printStackTrace();
-		}
-	}
+<<<<<<< HEAD
+
 	public void addCaseComment(Integer case_id, String text)
 	{
 		System.out.println("addCaseComment("+case_id+",\""+text+")");
@@ -451,58 +438,18 @@ public final class DatastoreInterface
 		}	
 	}
 	
-	//Added
-	public final List<Case> getCaseByPoiId(final int id){
+
+=======
+	
+	public final void updateConvictionEndDate(int case_id, int poi_id, String date) {
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("call get_links_for_poi (" + id+  ")");
-			final List<Conviction> con = new ArrayList<Conviction>();
-			while (rs.next()){
-				Conviction c = new Conviction(rs);
-				con.add(c);
-			}
-			final List<Case> c = new ArrayList<Case>();
-			for(Conviction item: con){
-				Case c2 = getCaseById(item.getCase_id());
-				c.add(c2);
-			}
-			rs.close();
+			stmt.execute("UPDATE is_linked_to SET end_time = \""+date+"\" WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
 			stmt.close();
-			return c;
 		}
 		catch (final SQLException ex){
 			ex.printStackTrace();
-			return null;
 		}
 	}
-	//Added
-	public final List<PersonOfInterestComment> getNotesForPoiId(List<Integer> ids)
-	{
-		try
-		{
-			final List<PersonOfInterestComment> notes = new ArrayList<PersonOfInterestComment>();
-			for(Integer id: ids){
-			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("call get_notes_for_poi("
-					+ id + ")");
-
-			
-			while (rs.next())
-			{
-				notes.add(new PersonOfInterestComment(rs.getInt("id"), rs.getInt("poi_id"), rs.getString("text")));
-			}
-
-			rs.close();
-			stmt.close();
-			}
-			return notes;
-
-		} catch (final SQLException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	
-
+>>>>>>> FETCH_HEAD
 }

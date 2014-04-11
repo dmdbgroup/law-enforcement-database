@@ -38,7 +38,6 @@
 					<% if (session.getAttribute("catmenu") != null) { %>
 					<%=session.getAttribute("catmenu")%>
 					<% } %>
-					<div class="menuDiv1"><a href="PersonsOfInterest">Persons of Interest</a></div>
 					<div class="menuDiv1"><a href="Search">Search</a></div>
 					<div class="menuDiv1"><a href="User">User Profile</a></div>
 					
