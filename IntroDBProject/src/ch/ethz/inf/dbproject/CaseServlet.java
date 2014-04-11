@@ -65,7 +65,8 @@ public final class CaseServlet extends HttpServlet {
 			if("toggleOpen".equals(action))
 			{
 				dbInterface.toggleCaseOpen(id);
-			}			else if("add_comment".equals(action))
+			}			
+			else if("add_comment".equals(action))
 			{
 				String text = request.getParameter("comment");
 				dbInterface.addCaseComment(id,text);
@@ -102,7 +103,7 @@ public final class CaseServlet extends HttpServlet {
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
 
-
+			session.setAttribute("case_open", aCase.getOpen());
 			session.setAttribute("caseTable", caseTable(aCase));	
 			session.setAttribute("notesTable", notesTable(notes));
 			session.setAttribute("convictionsTable", convictionTable(convictions, (UserManagement.getCurrentlyLoggedInUser(session)!=null), aCase));

@@ -66,11 +66,15 @@ public final class LinkServlet extends HttpServlet {
 				int cat_id;
 				if(request.getParameter("category").equals("insertnewcategory")) {
 					cat_id = dbInterface.addCategory(request.getParameter("newcategory").toString().trim());
+					System.out.println(cat_id);
+					System.out.println(request.getParameter("newcategory"));
 				}
 				else {
 					cat_id = Integer.parseInt((request.getParameter("category").toString().trim()));
 				}
 				int poi_id = Integer.parseInt(poiString.trim());
+				System.out.println(poi_id);
+				System.out.println(case_id);
 				dbInterface.addLink(poi_id, case_id, cat_id);
 				session.setAttribute("message", "person was successfully linked to this case");
 				request.setAttribute("id", case_id);

@@ -360,10 +360,12 @@ public final class DatastoreInterface
 	public final int addCategory(String name){
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT name FROM type WHERE name = \""+name+"\"");
-			if (!rs.next()) stmt.execute("INSERT INTO type (name) VALUES (\""+name+"\")");
-			rs.close();
-			rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+			if (!rs.next()) {
+				stmt.execute("INSERT INTO type (name) VALUES (\""+name+"\")");
+				rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+			}
+			rs.next();
 			int r = rs.getInt("id");
 			rs.close();
 			stmt.close();
@@ -378,7 +380,7 @@ public final class DatastoreInterface
 	public final void addLink(int poi_id, int case_id, int type_id) {
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			stmt.execute("INSERT INTO is_linked_to (poi_id, case_id, type_id, time) VALUES (\""+poi_id+"\", \""+case_id+"\", \""+type_id+"\", \"2013-02-23 00:00:00\")");
+			stmt.execute("INSERT INTO is_linked_to (poi_id, case_id, type_id) VALUES (\""+poi_id+"\", \""+case_id+"\", \""+type_id+"\")");
 			stmt.close();	
 		}
 		catch (final SQLException ex){
