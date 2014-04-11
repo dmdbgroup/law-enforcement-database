@@ -48,11 +48,7 @@ public final class UserServlet extends HttpServlet {
 			session.setAttribute(SESSION_USER_LOGGED_IN, false);
 		} else {
 			// Logged in
-			final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
-			userDetails.addBeanColumn("Name", "name");
-
 			session.setAttribute(SESSION_USER_LOGGED_IN, true);
-			session.setAttribute(SESSION_USER_DETAILS, userDetails);
 		}
 
 		// TODO display registration

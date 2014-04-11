@@ -15,6 +15,7 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.util.AfterRequest;
 import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
@@ -72,6 +73,7 @@ public final class CaseServlet extends HttpServlet {
 			else if("delete_case".equals(action))
 			{
 				dbInterface.deleteCase(id);
+				AfterRequest.execute(request);
 				this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
 				return;
 			}
@@ -110,7 +112,7 @@ public final class CaseServlet extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
 			return;
 		}
-
+		AfterRequest.execute(request);
 		this.getServletContext().getRequestDispatcher("/Case.jsp").forward(request, response);
 	}
 	
