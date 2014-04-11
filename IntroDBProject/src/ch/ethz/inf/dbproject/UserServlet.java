@@ -49,7 +49,6 @@ public final class UserServlet extends HttpServlet {
 		} else {
 			// Logged in
 			final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
-			userDetails.addBeanColumn("Username", "username");
 			userDetails.addBeanColumn("Name", "name");
 
 			session.setAttribute(SESSION_USER_LOGGED_IN, true);
@@ -71,7 +70,14 @@ public final class UserServlet extends HttpServlet {
 			// Store this user into the session
 			try {
 				if (dbInterface.userExists(username, password)) {
-					session.setAttribute(UserManagement.SESSION_USER, new User(username, password));
+					User u = new User(username, password);
+					session.setAttribute(UserManagement.SESSION_USER, u);
+					
+					final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
+					userDetails.addBeanColumn("Name", "name");
+					userDetails.addObject(u);
+
+					session.setAttribute(SESSION_USER_DETAILS, userDetails);
 					session.setAttribute(SESSION_USER_LOGGED_IN, true);
 				}
 				else {
@@ -100,11 +106,13 @@ public final class UserServlet extends HttpServlet {
 					return;
 				}
 				else {
-					session.setAttribute(UserManagement.SESSION_USER, new User(username, password));
+					User u = new User(username, password);
+					session.setAttribute(UserManagement.SESSION_USER, u);
 					dbInterface.addUser(username, password);
+					
 					final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
-					userDetails.addBeanColumn("Username", "username");
 					userDetails.addBeanColumn("Name", "name");
+					userDetails.addObject(u);
 
 					session.setAttribute(SESSION_USER_LOGGED_IN, true);
 					session.setAttribute(SESSION_USER_DETAILS, userDetails);

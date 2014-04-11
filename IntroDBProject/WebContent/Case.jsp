@@ -43,10 +43,15 @@ if (user != null) {
 
 <h2>Convictions</h2>
 
+<form method="get" action="Case">
+<input type="hidden" name="action" value="update_end_date" />
+<input type="hidden" name="id" value="<%=session.getAttribute("case_id")%>" />
 <%=session.getAttribute("convictionsTable")%>
 
 <% if (user != null) { %>
+<input type="submit" value="update end dates" /><br />
 <a href="Link?case_id=<%=session.getAttribute("case_id")%>">Link Persons of Interest to this case</a>
 <% } %>
+</form>
 
 <%@ include file="Footer.jsp"%>

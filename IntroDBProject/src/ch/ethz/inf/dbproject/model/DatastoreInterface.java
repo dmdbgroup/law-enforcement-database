@@ -160,7 +160,6 @@ public final class DatastoreInterface
 			final Statement stmt = this.sqlConnection.createStatement();
 			final ResultSet rs = stmt.executeQuery("call get_links_for_case("
 					+ id + ")");
-
 			final List<Conviction> convictions = new ArrayList<Conviction>();
 			while (rs.next())
 			{
@@ -330,7 +329,6 @@ public final class DatastoreInterface
 	{
 		try {
 			final Statement stmt = this.sqlConnection.createStatement();
-			System.out.println("insert into user (name, password) values (\"" + username + "\", \"" + password + "\");");
 			stmt.execute("insert into user (name, password) values (\"" + username + "\", \"" + password + "\");");
 			
 		}	
@@ -412,6 +410,17 @@ public final class DatastoreInterface
 			final Statement stmt = this.sqlConnection.createStatement();
 			stmt.execute("DELETE FROM is_linked_to WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
 			stmt.close();	
+		}
+		catch (final SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public final void updateConvictionEndDate(int case_id, int poi_id, String date) {
+		try{
+			final Statement stmt = this.sqlConnection.createStatement();
+			stmt.execute("UPDATE is_linked_to SET end_time = \""+date+"\" WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
+			stmt.close();
 		}
 		catch (final SQLException ex){
 			ex.printStackTrace();

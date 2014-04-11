@@ -6,18 +6,18 @@ package ch.ethz.inf.dbproject.model;
 public final class User
 {
 
-	private final String username;
+	private final String password;
 	private final String name;
 
-	public User(final String username, final String name)
+	public User(final String name, final String password)
 	{
-		this.username = username;
+		this.password = password;
 		this.name = name;
 	}
 
-	public String getUsername()
+	public String getPassword()
 	{
-		return username;
+		return password;
 	}
 
 	public String getName()

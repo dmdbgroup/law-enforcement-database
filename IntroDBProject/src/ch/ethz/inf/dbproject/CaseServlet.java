@@ -68,9 +68,20 @@ public final class CaseServlet extends HttpServlet {
 			else if ("delete_link".equals(action)){
 				String poi_id_string = request.getParameter("poi_id");
 				if (poi_id_string != null && !poi_id_string.equals("")) {
+					session.setAttribute("message", "link was successfully removed.");
 					dbInterface.removeLink(id, Integer.parseInt(poi_id_string));
 				}
-				
+			}
+			else if ("update_end_date".equals(action)){
+				String[] pois = request.getParameterValues("poi_id");
+				String[] dates = request.getParameterValues("newdates");
+				int a = pois.length;
+				for (int i = 0; i < a; i++) {
+					int poi_id = Integer.parseInt(pois[i]);
+					String date = dates[i];
+					dbInterface.updateConvictionEndDate(id, poi_id, date);
+					session.setAttribute("message", "dates were successfully updated");
+				}
 			}
 
 			final Case aCase = this.dbInterface.getCaseById(id);
@@ -85,7 +96,9 @@ public final class CaseServlet extends HttpServlet {
 			
 		} catch (final Exception ex) {
 			ex.printStackTrace();
-			this.getServletContext().getRequestDispatcher("/Cases.jsp").forward(request, response);
+			request.setAttribute("id", idString);
+			session.setAttribute("message", "an error has occurred");
+			this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
 			return;
 		}
 
@@ -151,13 +164,16 @@ public final class CaseServlet extends HttpServlet {
 		table.addBeanColumn("name", "personOfInterest");
 		table.addBeanColumn("category", "category");
 		table.addBeanColumn("date", "date");
-		if (!a_case.getOpen()) {
+		if (!a_case.getOpen() && logged_in) {
+			table.addBeanColumn("end date", "endDateBox");
+		}
+		else if (!a_case.getOpen() && !logged_in) {
 			table.addBeanColumn("end date", "endDate");
 		}
-		table.addObjects(convictions);
 		if (logged_in && a_case.getOpen()) {
 			table.addBeanColumn("remove suspect", "deleteButton");
 		}
+		table.addObjects(convictions);
 		
 		return table;
 	}
