@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.User;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -38,6 +39,7 @@ public final class UserServlet extends HttpServlet {
 			final HttpServletResponse response) throws ServletException,
 			IOException {
 
+		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
 		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
 
@@ -47,7 +49,6 @@ public final class UserServlet extends HttpServlet {
 		} else {
 			// Logged in
 			final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
-			userDetails.addBeanColumn("Username", "username");
 			userDetails.addBeanColumn("Name", "name");
 
 			session.setAttribute(SESSION_USER_LOGGED_IN, true);
@@ -69,11 +70,18 @@ public final class UserServlet extends HttpServlet {
 			// Store this user into the session
 			try {
 				if (dbInterface.userExists(username, password)) {
-					session.setAttribute(UserManagement.SESSION_USER, new User(username, password));
+					User u = new User(username, password);
+					session.setAttribute(UserManagement.SESSION_USER, u);
+					
+					final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
+					userDetails.addBeanColumn("Name", "name");
+					userDetails.addObject(u);
+
+					session.setAttribute(SESSION_USER_DETAILS, userDetails);
 					session.setAttribute(SESSION_USER_LOGGED_IN, true);
 				}
 				else {
-					session.setAttribute("wrongCombination", "true");
+					session.setAttribute("message", "Wrong combination, please try again.");
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -93,16 +101,18 @@ public final class UserServlet extends HttpServlet {
 			// Store this user into the session
 			try {
 				if (dbInterface.usernameExists(username)) {
-					session.setAttribute("alreadyTaken", "true");
+					session.setAttribute("message", "Username already exists. Please choose another one.");
 					this.getServletContext().getRequestDispatcher("/Registration.jsp").forward(request, response);
 					return;
 				}
 				else {
-					session.setAttribute(UserManagement.SESSION_USER, new User(username, password));
+					User u = new User(username, password);
+					session.setAttribute(UserManagement.SESSION_USER, u);
 					dbInterface.addUser(username, password);
+					
 					final BeanTableHelper<User> userDetails = new BeanTableHelper<User>("userDetails", "userDetails", User.class);
-					userDetails.addBeanColumn("Username", "username");
 					userDetails.addBeanColumn("Name", "name");
+					userDetails.addObject(u);
 
 					session.setAttribute(SESSION_USER_LOGGED_IN, true);
 					session.setAttribute(SESSION_USER_DETAILS, userDetails);

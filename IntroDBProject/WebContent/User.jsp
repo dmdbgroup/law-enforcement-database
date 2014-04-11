@@ -21,9 +21,6 @@ if ((Boolean) session.getAttribute(UserServlet.SESSION_USER_LOGGED_IN)) {
 } else {
 	// User not logged in. Display the login form.
 %>
-	<% if (session.getAttribute("wrongCombination") == "true") { %>
-		<p>Wrong combination, please try again.</p>
-	<%} %>
 
 	<form action="User" method="get">
 	<input type="hidden" name="action" value="login" />

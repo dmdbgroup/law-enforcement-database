@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.model.User;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
@@ -40,6 +41,7 @@ public final class CasesServlet extends HttpServlet {
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) 
 			throws ServletException, IOException {
 
+		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
 
 		/*******************************************************

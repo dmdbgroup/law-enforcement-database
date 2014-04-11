@@ -15,6 +15,7 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
@@ -45,11 +46,13 @@ public final class CaseServlet extends HttpServlet {
 	 */
 	protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
+		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
 
 		final String idString = request.getParameter("id");
 		if (idString == null) {
 			this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
+			return;
 		}
 
 		try {
@@ -61,8 +64,7 @@ public final class CaseServlet extends HttpServlet {
 			if("toggleOpen".equals(action))
 			{
 				dbInterface.toggleCaseOpen(id);
-			}
-			else if("add_comment".equals(action))
+			}			else if("add_comment".equals(action))
 			{
 				String text = request.getParameter("comment");
 				dbInterface.addCaseComment(id,text);
@@ -73,19 +75,40 @@ public final class CaseServlet extends HttpServlet {
 				this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
 				return;
 			}
-			
-			final Case aCase = this.dbInterface.getCaseById(id);
+			else if ("delete_link".equals(action)){
+				String poi_id_string = request.getParameter("poi_id");
+				if (poi_id_string != null && !poi_id_string.equals("")) {
+					session.setAttribute("message", "link was successfully removed.");
+					dbInterface.removeLink(id, Integer.parseInt(poi_id_string));
+				}
+			}
+			else if ("update_end_date".equals(action)){
+				String[] pois = request.getParameterValues("poi_id");
+				String[] dates = request.getParameterValues("newdates");
+				int a = pois.length;
+				for (int i = 0; i < a; i++) {
+					int poi_id = Integer.parseInt(pois[i]);
+					String date = dates[i];
+					dbInterface.updateConvictionEndDate(id, poi_id, date);
+					session.setAttribute("message", "dates were successfully updated");
+				}
+			}
+
+						final Case aCase = this.dbInterface.getCaseById(id);
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
 
 
 			session.setAttribute("caseTable", caseTable(aCase));	
 			session.setAttribute("notesTable", notesTable(notes));
-			session.setAttribute("convictionsTable", convictionTable(convictions));
+			session.setAttribute("convictionsTable", convictionTable(convictions, (UserManagement.getCurrentlyLoggedInUser(session)!=null), aCase));
 			
 		} catch (final Exception ex) {
 			ex.printStackTrace();
-			this.getServletContext().getRequestDispatcher("/Cases.jsp").forward(request, response);
+			request.setAttribute("id", idString);
+			session.setAttribute("message", "an error has occurred");
+			this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
+			return;
 		}
 
 		this.getServletContext().getRequestDispatcher("/Case.jsp").forward(request, response);
@@ -135,7 +158,7 @@ public final class CaseServlet extends HttpServlet {
 		return table;
 	}
 	
-	private BeanTableHelper<Conviction> convictionTable(final List<Conviction> convictions)
+	private BeanTableHelper<Conviction> convictionTable(final List<Conviction> convictions, boolean logged_in, Case a_case)
 	{
 		/*******************************************************
 		 * Construct a table to present all notes of a case
@@ -150,8 +173,15 @@ public final class CaseServlet extends HttpServlet {
 		table.addBeanColumn("name", "personOfInterest");
 		table.addBeanColumn("category", "category");
 		table.addBeanColumn("date", "date");
-		table.addBeanColumn("end date", "endDate");
-
+		if (!a_case.getOpen() && logged_in) {
+			table.addBeanColumn("end date", "endDateBox");
+		}
+		else if (!a_case.getOpen() && !logged_in) {
+			table.addBeanColumn("end date", "endDate");
+		}
+		if (logged_in && a_case.getOpen()) {
+			table.addBeanColumn("remove suspect", "deleteButton");
+		}
 		table.addObjects(convictions);
 		
 		return table;

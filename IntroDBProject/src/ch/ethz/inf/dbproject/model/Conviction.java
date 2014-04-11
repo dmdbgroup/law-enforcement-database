@@ -18,6 +18,8 @@ public class Conviction
 	private Category category;
 	private PersonOfInterest personOfInterest;
 	private Case caseObject;
+	private int number;
+	public static int counter = 0;
 
 	public Conviction(final Date date, final Date endDate, final int type_id,
 			final int poi_id, final int case_id)
@@ -91,5 +93,14 @@ public class Conviction
 	public void setCase(Case caseObject)
 	{
 		this.caseObject = caseObject;
+	}
+	
+	public String getDeleteButton() {
+		return "<a href=\"Case?action=delete_link&id="+case_id+"&poi_id="+poi_id+"\">delete</a>";
+	}
+	
+	
+	public String getEndDateBox() {
+		return "<input type=\"text\" name=\"newdates\" value=\""+endDate+"\" /><input type=\"hidden\" name=\"poi_id\" value=\""+poi_id+"\"";
 	}
 }
