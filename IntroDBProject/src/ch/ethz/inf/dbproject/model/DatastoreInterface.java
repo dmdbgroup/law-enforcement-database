@@ -416,10 +416,10 @@ public final class DatastoreInterface
 		}
 	}
 	
-	public final void updateConvictionEndDate(int case_id, int poi_id, String date) {
+	public final void updateConvictionDates(int case_id, int poi_id, String start_date, String end_date) {
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			stmt.execute("UPDATE is_linked_to SET end_time = \""+date+"\" WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
+			stmt.execute("UPDATE is_linked_to SET end_time = \""+end_date+"\", time = \""+start_date+"\" WHERE case_id = \""+case_id+"\" AND poi_id = \""+poi_id+"\"");
 			stmt.close();
 		}
 		catch (final SQLException ex){

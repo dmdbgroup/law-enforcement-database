@@ -55,14 +55,20 @@ public class Conviction
 		return poi_id;
 	}
 
-	public Date getDate()
+	public String getDate()
 	{
-		return date;
+		if (date == null)
+			return "";
+		else
+			return date.toString();
 	}
 
-	public Date getEndDate()
+	public String getEndDate()
 	{
-		return endDate;
+		if (endDate == null)
+			return "";
+		else
+			return endDate.toString();
 	}
 
 	public Category getCategory()
@@ -101,6 +107,10 @@ public class Conviction
 	
 	
 	public String getEndDateBox() {
-		return "<input type=\"text\" name=\"newdates\" value=\""+endDate+"\" /><input type=\"hidden\" name=\"poi_id\" value=\""+poi_id+"\"";
+		return "<input type=\"text\" name=\"newenddates\" value=\""+getEndDate()+"\" />";
+	}
+	
+	public String getStartDateBox() {
+		return "<input type=\"text\" name=\"newstartdates\" value=\""+getDate()+"\" /><input type=\"hidden\" name=\"poi_id\" value=\""+poi_id+"\"";
 	}
 }

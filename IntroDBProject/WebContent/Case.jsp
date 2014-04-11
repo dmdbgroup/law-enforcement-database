@@ -46,7 +46,7 @@ if (user != null) {
 <h2>Convictions</h2>
 
 <form method="get" action="Case">
-<input type="hidden" name="action" value="update_end_date" />
+<input type="hidden" name="action" value="update_date" />
 <input type="hidden" name="id" value="<%=session.getAttribute("case_id")%>" />
 <%=session.getAttribute("convictionsTable")%>
 
