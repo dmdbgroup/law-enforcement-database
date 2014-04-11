@@ -81,4 +81,8 @@ public final class Case
 	{
 		return creator;
 	}
+	
+	public String toString() {
+		return title;
+	}
 }

@@ -119,10 +119,10 @@ public final class PoiServlet extends HttpServlet{
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("name", "personOfInterest");
+		table.addBeanColumn("case", "case");
 		table.addBeanColumn("category", "category");
-		table.addBeanColumn("start date", "startDateBox");
-		table.addBeanColumn("end date", "endDateBox");
+		table.addBeanColumn("start date", "date");
+		table.addBeanColumn("end date", "endDate");
 			
 		table.addObjects(convictions);
 		

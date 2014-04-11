@@ -58,7 +58,7 @@ public final class PersonsOfInterestServlet extends HttpServlet{
 			i.add(p.getId());
 			}
 		
-		table2.addObjects(this.dbInterface.getNotesForPoiId(i));
+		table2.addObjects(this.dbInterface.getNotesForPoiIds(i));
 
 		this.getServletContext().getRequestDispatcher("/Pois.jsp").forward(request, response);
 	}
