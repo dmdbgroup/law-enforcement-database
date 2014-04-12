@@ -19,10 +19,10 @@ import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
 import ch.ethz.inf.dbproject.model.User;
+import ch.ethz.inf.dbproject.util.AfterRequest;
 import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
-import ch.ethz.inf.dbproject.model.PersonOfInterestComment;
 
 @WebServlet(description= "Displays all Persons of Interest.", urlPatterns = { "/Pois"})
 public final class PoisServlet extends HttpServlet{
@@ -100,6 +100,8 @@ public final class PoisServlet extends HttpServlet{
 		}
 		
 		session.setAttribute("pois", poisTable((User) session.getAttribute(UserManagement.SESSION_USER)));
+		
+		AfterRequest.execute(request);
 		
 		this.getServletContext().getRequestDispatcher("/Pois.jsp").forward(request, response);
 	}

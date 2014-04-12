@@ -518,34 +518,6 @@ public final class DatastoreInterface
 			return null;
 		}
 	}
-	//Added
-	public final List<PersonOfInterestComment> getNotesForPoiIds(List<Integer> ids)
-	{
-		try
-		{
-			final List<PersonOfInterestComment> notes = new ArrayList<PersonOfInterestComment>();
-			for(Integer id: ids){
-			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("call get_notes_for_poi("
-					+ id + ")");
-
-			
-			while (rs.next())
-			{
-				notes.add(new PersonOfInterestComment(rs.getInt("id"), rs.getInt("poi_id"), rs.getString("text")));
-			}
-
-			rs.close();
-			stmt.close();
-			}
-			return notes;
-
-		} catch (final SQLException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
-	}
 	
 	public final List<PoiComment> getNotesForPoiId(int id)
 	{
