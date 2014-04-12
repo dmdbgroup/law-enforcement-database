@@ -283,7 +283,7 @@ public final class DatastoreInterface
 
 	public final List<Case> searchCasesBySimilarCategory(String parameter)
 	{
-		return getCaseList("call search_cases_by_type_of_conviction(\""+parameter+"\")");
+		return getCaseList("call search_cases_by_similar_type_of_conviction(\""+parameter+"\")");
 	}
 
 	public final List<Case> searchCasesBySimilarTitle(String parameter)

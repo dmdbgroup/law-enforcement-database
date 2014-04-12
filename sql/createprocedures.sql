@@ -1,3 +1,4 @@
+drop procedure if exists search_cases_by_similar_type_of_conviction;
 drop procedure if exists add_poi;
 drop procedure if exists delete_poi;
 drop procedure if exists get_notes_for_poi;
@@ -46,3 +47,7 @@ create procedure get_notes_for_poi( in poi_id int ) select * from poi_note where
 create procedure delete_poi( in poi_id int ) delete from poi where id = poi_id;
 create procedure add_poi( in firstname nvarchar(255), in surname nvarchar(255), in birthdate Date )
 	insert into poi ( firstname, surname, birthdate ) values ( firstname, surname, birthdate );
+create procedure search_cases_by_similar_type_of_conviction ( in contains nvarchar(255) ) 
+	select distinct c.id, c.title, c.description, c.time, c.address, c.open, c.creator
+	from (`case` c inner join is_linked_to l on l.case_id = c.id) inner join type t on l.type_id = t.id
+	where t.name like concat('%', contains, '%');
