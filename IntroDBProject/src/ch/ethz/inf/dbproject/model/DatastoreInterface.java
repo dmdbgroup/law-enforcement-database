@@ -53,7 +53,7 @@ public final class DatastoreInterface
 
 	public final List<Case> getAllCases()
 	{
-		return getCaseList("select * from allcases");
+		return getCaseList("call get_all_cases()");
 	}
 
 	public final List<CaseComment> getNotesForCaseId(int id)
@@ -245,12 +245,12 @@ public final class DatastoreInterface
 
 	public final List<Case> getMostRecentCases()
 	{
-		return getCaseList("select * from newestcases");
+		return getCaseList("call get_most_recent_cases()");
 	}
 
 	public final List<Case> getOldestUnsolvedCases()
 	{
-		return getCaseList("select * from oldestcases");
+		return getCaseList("call get_oldest_unsolved_cases()");
 	}
 
 	public final List<Case> searchCasesByDescription(String parameter)
@@ -264,7 +264,7 @@ public final class DatastoreInterface
 		try
 		{
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from alltypes");
+			final ResultSet rs = stmt.executeQuery("call get_all_categories()");
 			final List<Category> cats = new ArrayList<Category>();
 			while (rs.next())
 			{
@@ -296,7 +296,7 @@ public final class DatastoreInterface
 		boolean result = false;
 		try {
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from user where name = \"" + username + "\" and password = \"" + password + "\";");
+			final ResultSet rs = stmt.executeQuery("call user_exists( \"" + username + "\" , \"" + password + "\")");
 			if (!rs.next())
 			{
 				result = false;
@@ -317,7 +317,7 @@ public final class DatastoreInterface
 		boolean result = false;
 		try {
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from user where name = \"" + username + "\";");
+			final ResultSet rs = stmt.executeQuery("call username_exists( \"" + username + "\")");
 			if (!rs.next())
 			{
 				result = false;
@@ -349,7 +349,7 @@ public final class DatastoreInterface
 	public final List<PersonOfInterest> getAllPoi(){
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("select * from allpoi");
+			final ResultSet rs = stmt.executeQuery("call get_all_poi()");
 			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
 			while (rs.next()){
 				PersonOfInterest p = new PersonOfInterest(rs);
@@ -368,7 +368,7 @@ public final class DatastoreInterface
 	public final List<PersonOfInterest> getAllUnsuspectedPois(int case_id){
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			final ResultSet rs = stmt.executeQuery("SELECT p1.id, p1.firstname, p1.surname, p1.birthdate from poi p1 WHERE p1.id NOT IN (SELECT p2.id FROM poi AS p2 JOIN is_linked_to AS il ON p2.id = il.poi_id WHERE il.case_id = \"" + case_id + "\" GROUP BY p2.id)"); 
+			final ResultSet rs = stmt.executeQuery("call get_all_unsuspected_pois(" + case_id + ")"); 
 			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
 			while (rs.next()){
 				PersonOfInterest p = new PersonOfInterest(rs);
@@ -387,10 +387,10 @@ public final class DatastoreInterface
 	public final int addCategory(String name){
 		try{
 			final Statement stmt = this.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+			ResultSet rs = stmt.executeQuery("call get_id_from_type(\""+name+"\")");
 			if (!rs.next()) {
 				stmt.execute("INSERT INTO type (name) VALUES (\""+name+"\")");
-				rs = stmt.executeQuery("SELECT id FROM type WHERE name = \""+name+"\"");
+				rs = stmt.executeQuery("call get_id_from_type(\""+name+"\")");
 			}
 			rs.next();
 			int r = rs.getInt("id");

@@ -5,6 +5,13 @@ drop view if exists allpoi;
 drop view if exists oldestcases;
 drop view if exists newestcases;
 drop view if exists allcases;
+drop view if exists allunsuspectedpois;
+
+create view allunsuspectedpois (id, firstname, surname, birthdate)
+	as select p1.id, p1.firstname, p1.surname, p1.birthdate from poi p1
+	where p1.id not in 
+	(select p2.id from poi as p2 join is_linked_to as il on p2.id = il.poi_id 
+	where il.case_id = case_id group by p2.id);
 
 create view allcases (id, title, description, time, address, open, creator) 
 	as select id, title, description, time, address, open, creator from `case`;
