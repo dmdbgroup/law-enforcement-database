@@ -43,6 +43,7 @@ public final class CasesServlet extends HttpServlet {
 
 		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
+		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
 
 		/*******************************************************
 		 * Construct a table to present all our results
@@ -87,23 +88,28 @@ public final class CasesServlet extends HttpServlet {
 
 		if("addcase".equals(action))
 		{
-			String title = request.getParameter("title");
-			String description = request.getParameter("description");
-			String timeString = request.getParameter("time");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			long ms = 0;
-			try
-			{
-				ms = sdf.parse(timeString).getTime();
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
+			if (loggedUser == null) {
+				session.setAttribute("message", "You have to be logged in for this action");
 			}
-			Time time = new Time(ms);
-			String address = request.getParameter("address");
-			String creator = request.getParameter("creator");
-			dbInterface.addCase(title, description, time, address, creator, true);
-			table.addObjects(this.dbInterface.getAllCases());
+			else {
+				String title = request.getParameter("title");
+				String description = request.getParameter("description");
+				String timeString = request.getParameter("time");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+				long ms = 0;
+				try
+				{
+					ms = sdf.parse(timeString).getTime();
+				} catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+				Time time = new Time(ms);
+				String address = request.getParameter("address");
+				String creator = request.getParameter("creator");
+				dbInterface.addCase(title, description, time, address, creator, true);
+				table.addObjects(this.dbInterface.getAllCases());
+			}
 		}
 		else if (filter == null && category_id_string == null) {
 

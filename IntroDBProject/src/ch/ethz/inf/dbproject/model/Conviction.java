@@ -18,8 +18,6 @@ public class Conviction
 	private Category category;
 	private PersonOfInterest personOfInterest;
 	private Case caseObject;
-	private int number;
-	public static int counter = 0;
 
 	public Conviction(final Date date, final Date endDate, final int type_id,
 			final int poi_id, final int case_id)

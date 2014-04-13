@@ -15,6 +15,7 @@ import ch.ethz.inf.dbproject.model.Conviction;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.model.User;
 import ch.ethz.inf.dbproject.util.AfterRequest;
 import ch.ethz.inf.dbproject.util.BeforeRequest;
 import ch.ethz.inf.dbproject.util.UserManagement;
@@ -49,6 +50,7 @@ public final class CaseServlet extends HttpServlet {
 
 		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
+		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
 
 		final String idString = request.getParameter("id");
 		if (idString == null) {
@@ -62,7 +64,10 @@ public final class CaseServlet extends HttpServlet {
 
 			// Check if a toggleOpen request was sent
 			final String action = request.getParameter("action");
-			if("toggleOpen".equals(action))
+			if (loggedUser == null) {
+				session.setAttribute("message", "You have to be logged in for this action");
+			}
+			else if("toggleOpen".equals(action))
 			{
 				dbInterface.toggleCaseOpen(id);
 			}			

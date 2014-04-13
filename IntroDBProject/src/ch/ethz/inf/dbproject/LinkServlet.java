@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 import ch.ethz.inf.dbproject.model.Category;
 import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
+import ch.ethz.inf.dbproject.model.User;
 import ch.ethz.inf.dbproject.util.BeforeRequest;
+import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 /**
@@ -40,6 +42,7 @@ public final class LinkServlet extends HttpServlet {
 	
 		BeforeRequest.execute(request);
 		final HttpSession session = request.getSession(true);
+		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
 		
 		session.removeAttribute("message");
 		
@@ -50,10 +53,14 @@ public final class LinkServlet extends HttpServlet {
 		}
 		
 		String action = request.getParameter("action");
-		System.out.println(action);
-		
 		int case_id = Integer.parseInt(caseIdString.trim());
 		session.setAttribute("case_id", case_id);
+		
+		if (loggedUser == null) {
+			session.setAttribute("message", "You have to be logged in for this action");
+			request.setAttribute("id", case_id);
+			this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
+		}
 		
 		if (("addlink").equals(action)) {
 			String catString = (String) request.getParameter("category");
@@ -66,15 +73,11 @@ public final class LinkServlet extends HttpServlet {
 				int cat_id;
 				if(request.getParameter("category").equals("insertnewcategory")) {
 					cat_id = dbInterface.addCategory(request.getParameter("newcategory").toString().trim());
-					System.out.println(cat_id);
-					System.out.println(request.getParameter("newcategory"));
 				}
 				else {
 					cat_id = Integer.parseInt((request.getParameter("category").toString().trim()));
 				}
 				int poi_id = Integer.parseInt(poiString.trim());
-				System.out.println(poi_id);
-				System.out.println(case_id);
 				dbInterface.addLink(poi_id, case_id, cat_id);
 				session.setAttribute("message", "Person was successfully linked to this case");
 				request.setAttribute("id", case_id);

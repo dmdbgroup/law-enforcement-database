@@ -68,8 +68,11 @@ public final class PoisServlet extends HttpServlet{
 		final HttpSession session = request.getSession(true);
 
 		BeforeRequest.execute(request);
+		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
+		
 		String action = request.getParameter("action");
 		String poi_id_string = request.getParameter("id");
+		
 		if(poi_id_string != null)
 		{
 			Integer poi_id = Integer.parseInt(poi_id_string);
@@ -82,20 +85,25 @@ public final class PoisServlet extends HttpServlet{
 		{
 			if("add_poi".equals(action))
 			{
-				String firstname = request.getParameter("firstname");
-				String surname = request.getParameter("surname");
-				String birthdayString = request.getParameter("birthday");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-				long ms = 0;
-				try
-				{
-					ms = sdf.parse(birthdayString).getTime();
-				} catch (ParseException e)
-				{
-					e.printStackTrace();
+				if (loggedUser == null) {
+					session.setAttribute("message", "You have to be logged in for this action");
 				}
-				Date birthday = new Date(ms);
-				dbInterface.addPoi(firstname, surname, birthday);
+				else {
+					String firstname = request.getParameter("firstname");
+					String surname = request.getParameter("surname");
+					String birthdayString = request.getParameter("birthday");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+					long ms = 0;
+					try
+					{
+						ms = sdf.parse(birthdayString).getTime();
+					} catch (ParseException e)
+					{
+						e.printStackTrace();
+					}
+					Date birthday = new Date(ms);
+					dbInterface.addPoi(firstname, surname, birthday);
+				}
 			}
 		}
 		

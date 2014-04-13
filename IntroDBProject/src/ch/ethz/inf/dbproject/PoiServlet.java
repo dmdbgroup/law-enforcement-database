@@ -16,7 +16,9 @@ import ch.ethz.inf.dbproject.model.DatastoreInterface;
 import ch.ethz.inf.dbproject.model.Case;
 import ch.ethz.inf.dbproject.model.PersonOfInterest;
 import ch.ethz.inf.dbproject.model.PoiComment;
+import ch.ethz.inf.dbproject.model.User;
 import ch.ethz.inf.dbproject.util.BeforeRequest;
+import ch.ethz.inf.dbproject.util.UserManagement;
 import ch.ethz.inf.dbproject.util.html.BeanTableHelper;
 
 
@@ -33,17 +35,27 @@ public final class PoiServlet extends HttpServlet{
 		final HttpSession session = request.getSession(true);
 		
 		BeforeRequest.execute(request);
+		final User loggedUser = UserManagement.getCurrentlyLoggedInUser(session);
+		
 		final String idString = request.getParameter("id");
 		if (idString == null){
-			this.getServletContext().getRequestDispatcher("/PersonsOfInterest").forward(request,response);
+			this.getServletContext().getRequestDispatcher("/Pois").forward(request,response);
 			return;
 		}
+		
 		final Integer id = Integer.parseInt(idString);
 		String action = request.getParameter("action");
+		
 		if (action != null && "add_comment".equals(action.trim())) {
-			String text = request.getParameter("comment");
-			dbInterface.addPoiComment(id,text);
+			if (loggedUser == null) {
+				session.setAttribute("message", "You have to be logged in for this action");
+			}
+			else {
+				String text = request.getParameter("comment");
+				dbInterface.addPoiComment(id,text);
+			}
 		}
+		
 		try{
 			final PersonOfInterest aPoi = this.dbInterface.getPoiById(id);
 			final List<Conviction> cons = dbInterface.getConvictionsForPoiId(id);
