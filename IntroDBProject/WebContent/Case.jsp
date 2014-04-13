@@ -51,10 +51,12 @@ if (user != null) {
 <%=session.getAttribute("convictionsTable")%>
 
 <% if (user != null && !(Boolean) session.getAttribute("case_open")) { %>
+<br />
 <input type="submit" value="update end dates" /><br />
 <% } %>
 
-<% if (user != null) { %>
+<% if (user != null && (Boolean) session.getAttribute("case_open")) { %>
+<br />
 <a href="Link?case_id=<%=session.getAttribute("case_id")%>">Link Persons of Interest to this case</a>
 <% } %>
 </form>
