@@ -43,7 +43,12 @@ if (user != null) {
 }
 %>
 
-<h2>Convictions</h2>
+
+<% if (!(Boolean) session.getAttribute("case_open")) { %>
+	<h2>Convictions</h2>
+<% } else { %>
+	<h2>Suspects</h2>
+<% } %>
 
 <form method="get" action="Case">
 <input type="hidden" name="action" value="update_date" />

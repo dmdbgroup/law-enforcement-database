@@ -105,6 +105,10 @@ public final class CaseServlet extends HttpServlet {
 			}
 
 			final Case aCase = this.dbInterface.getCaseById(id);
+			if (aCase == null) {
+				session.setAttribute("message", "This case doesn't exist any more");
+				this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
+			}
 			final List<CaseComment> notes = this.dbInterface.getNotesForCaseId(id);
 			final List<Conviction> convictions = this.dbInterface.getConvictionsForCaseId(id);
 
@@ -180,14 +184,14 @@ public final class CaseServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("Name", "personOfInterest");
+		table.addBeanColumn("Name, Birthdate", "personOfInterest");
 		table.addBeanColumn("Category", "category");
 		if (!a_case.getOpen() && logged_in) {
 			table.addBeanColumn("Start date", "startDateBox");
 			table.addBeanColumn("End date", "endDateBox");
 		}
 		else if (!a_case.getOpen()) {
-			table.addBeanColumn("Date", "date");
+			table.addBeanColumn("Start Date", "date");
 			table.addBeanColumn("End date", "endDate");
 		}
 		if (logged_in && a_case.getOpen()) {
