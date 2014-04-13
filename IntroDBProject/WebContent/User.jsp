@@ -8,8 +8,8 @@
 if ((Boolean) session.getAttribute(UserServlet.SESSION_USER_LOGGED_IN)) {
 	// User is logged in. Display the details:
 %>
-	
-<%= session.getAttribute(UserServlet.SESSION_USER_DETAILS) %>
+	<%=session.getAttribute(UserServlet.SESSION_USER_DETAILS)%>
+	<br />
 	<a href="User?action=logout">Logout</a>
 
 
