@@ -26,7 +26,7 @@
 	Address ( Street StreetNo, PLZ Ort ):
 	<input type="text" name="address" />
 	<br/>
-	Time ( yyyy-mm-dd hh:mm:ss ):
+	Time ( yyyy-mm-dd ):
 	<input type="text" name="time" />
 	<br/>
 	<input type="hidden" name="creator" value="<%=user.getName()%>" />

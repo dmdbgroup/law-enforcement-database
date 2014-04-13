@@ -90,7 +90,7 @@ public final class CasesServlet extends HttpServlet {
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
 			String timeString = request.getParameter("time");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 			long ms = 0;
 			try
 			{

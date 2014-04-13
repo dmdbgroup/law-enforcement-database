@@ -1,5 +1,6 @@
 package ch.ethz.inf.dbproject.model;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -14,13 +15,13 @@ public final class Case
 	private final boolean open;
 	private final String title;
 	private final String description;
-	private final Time time;
+	private final Date time;
 
 	/**
 	 * Construct a new case.
 	 */
 	public Case(final int id, final String address, final String creator, final boolean open,
-			final String title, final String description, final Time time)
+			final String title, final String description, final Date time)
 	{
 		this.id = id;
 		this.address = address;
@@ -39,7 +40,7 @@ public final class Case
 		this.open = rs.getBoolean("open");
 		this.title = rs.getString("title");
 		this.description = rs.getString("description");
-		this.time = rs.getTime("time");
+		this.time = rs.getDate("time");
 	}
 
 	public int getId()
@@ -67,7 +68,7 @@ public final class Case
 		return description;
 	}
 
-	public Time getTime()
+	public Date getTime()
 	{
 		return time;
 	}

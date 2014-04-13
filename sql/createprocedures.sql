@@ -1,3 +1,4 @@
+drop procedure if exists search_cases_by_similar_title;
 drop procedure if exists search_cases_by_similar_type_of_conviction;
 drop procedure if exists add_poi;
 drop procedure if exists delete_poi;
@@ -71,3 +72,4 @@ create procedure user_exists( in user_name nvarchar(255), in pass_word nvarchar(
 	select * from user where name = user_name and password = pass_word;
 create procedure username_exists(in user_name nvarchar(255))
 	select * from user where name = user_name;
+create procedure search_cases_by_similar_title( in contains nvarchar(255) ) select * from allcases where title like concat('%', contains, '%');
