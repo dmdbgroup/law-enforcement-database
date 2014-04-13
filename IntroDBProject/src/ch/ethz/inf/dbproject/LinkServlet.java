@@ -59,7 +59,7 @@ public final class LinkServlet extends HttpServlet {
 			String catString = (String) request.getParameter("category");
 			String poiString = (String) request.getParameter("poi");
 			if (catString == null || poiString == null) {
-				session.setAttribute("message", "please set both a person of interest and a type of crime");
+				session.setAttribute("message", "Please set both a person of interest and a type of crime");
 				this.getServletContext().getRequestDispatcher("/Link.jsp").forward(request, response);
 			}
 			else {
@@ -76,7 +76,7 @@ public final class LinkServlet extends HttpServlet {
 				System.out.println(poi_id);
 				System.out.println(case_id);
 				dbInterface.addLink(poi_id, case_id, cat_id);
-				session.setAttribute("message", "person was successfully linked to this case");
+				session.setAttribute("message", "Person was successfully linked to this case");
 				request.setAttribute("id", case_id);
 				this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
 			}
@@ -123,7 +123,7 @@ public final class LinkServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("name and birthdate", "checkBox");
+		table.addBeanColumn("Name and birthdate", "checkBox");
 
 		table.addObjects(pois);
 		
@@ -142,7 +142,7 @@ public final class LinkServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("name", "radioBox");
+		table.addBeanColumn("Name", "radioBox");
 
 		table.addObjects(categories);
 		

@@ -111,7 +111,7 @@ public final class CaseServlet extends HttpServlet {
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 			request.setAttribute("id", idString);
-			session.setAttribute("message", "an error has occurred");
+			session.setAttribute("message", "An error has occurred");
 			this.getServletContext().getRequestDispatcher("/Case").forward(request, response);
 			return;
 		}
@@ -132,10 +132,10 @@ public final class CaseServlet extends HttpServlet {
 
 		// Add columns to the new table
 		table.addBeanColumn("Title", "title");
-		table.addBeanColumn("open", "open");
+		table.addBeanColumn("Open", "open");
 		table.addBeanColumn("Case Description", "description");
-		table.addBeanColumn("location", "address");
-		table.addBeanColumn("time", "time");
+		table.addBeanColumn("Location", "address");
+		table.addBeanColumn("Time", "time");
 		table.addBeanColumn("Creator", "creator");
 
 		table.addObject(c);
@@ -156,7 +156,7 @@ public final class CaseServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("text", "text");
+		table.addBeanColumn("Text", "text");
 
 		table.addObjects(notes);
 		
@@ -175,18 +175,18 @@ public final class CaseServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("name", "personOfInterest");
-		table.addBeanColumn("category", "category");
+		table.addBeanColumn("Name", "personOfInterest");
+		table.addBeanColumn("Category", "category");
 		if (!a_case.getOpen() && logged_in) {
-			table.addBeanColumn("start date", "startDateBox");
-			table.addBeanColumn("end date", "endDateBox");
+			table.addBeanColumn("Start date", "startDateBox");
+			table.addBeanColumn("End date", "endDateBox");
 		}
 		else if (!a_case.getOpen()) {
-			table.addBeanColumn("date", "date");
-			table.addBeanColumn("end date", "endDate");
+			table.addBeanColumn("Date", "date");
+			table.addBeanColumn("End date", "endDate");
 		}
 		if (logged_in && a_case.getOpen()) {
-			table.addBeanColumn("remove suspect", "deleteButton");
+			table.addBeanColumn("Remove suspect", "deleteButton");
 		}
 		table.addObjects(convictions);
 		

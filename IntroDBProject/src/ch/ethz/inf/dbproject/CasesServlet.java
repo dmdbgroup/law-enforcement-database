@@ -55,10 +55,10 @@ public final class CasesServlet extends HttpServlet {
 
 		// Add columns to the new table
 		table.addBeanColumn("Title", "title");
-		table.addBeanColumn("open", "open");
+		table.addBeanColumn("Open", "open");
 		table.addBeanColumn("Case Description", "description");
-		table.addBeanColumn("location", "address");
-		table.addBeanColumn("time", "time");
+		table.addBeanColumn("Location", "address");
+		table.addBeanColumn("Time", "time");
 		table.addBeanColumn("Creator", "creator");
 
 		/*
@@ -90,7 +90,7 @@ public final class CasesServlet extends HttpServlet {
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
 			String timeString = request.getParameter("time");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			long ms = 0;
 			try
 			{

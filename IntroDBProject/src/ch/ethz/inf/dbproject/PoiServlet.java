@@ -1,4 +1,3 @@
-//edit
 package ch.ethz.inf.dbproject;
 
 import java.io.IOException;
@@ -102,7 +101,7 @@ public final class PoiServlet extends HttpServlet{
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("text", "text");
+		table.addBeanColumn("Text", "text");
 
 		table.addObjects(notes);
 		
@@ -121,10 +120,10 @@ public final class PoiServlet extends HttpServlet{
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("case", "case");
-		table.addBeanColumn("category", "category");
-		table.addBeanColumn("start date", "date");
-		table.addBeanColumn("end date", "endDate");
+		table.addBeanColumn("Case", "case");
+		table.addBeanColumn("Category", "category");
+		table.addBeanColumn("Start date", "date");
+		table.addBeanColumn("End date", "endDate");
 			
 		table.addObjects(convictions);
 		

@@ -16,17 +16,17 @@ insert into `case` (open, title, description, address, time, creator) values (TR
 insert into poi (firstname, surname, birthdate) values ( "alex", "peiker", "2013-12-19");
 insert into poi (firstname, surname, birthdate) values ( "jimmy", "jones", "2013-12-20");
 
-insert into type (name) values ( "murder");
-insert into type (name) values ( "robbery");
+insert into type (name) values ( "Murder");
+insert into type (name) values ( "Robbery");
 
 insert into is_linked_to (case_id, poi_id, type_id, time, end_time)
 	select c.id, p.id, t.id, "2011-12-18 13:17:17", "2011-12-21 13:17:17"
 	from `case` c, poi p, `type` t
-	where c.title = "case 1" and p.firstname = "alex" and t.name = "murder";
+	where c.title = "case 1" and p.firstname = "alex" and t.name = "Murder";
 insert into is_linked_to (case_id, poi_id, type_id, time) 
 	select c.id, p.id, t.id, "2013-12-18 13:17:17"
 	from `case` c, poi p, `type` t
-	where c.title = "case 2" and p.firstname = "alex" and t.name = "robbery";
+	where c.title = "case 2" and p.firstname = "alex" and t.name = "Robbery";
 
 insert into case_note (case_id, text)
 	select c.id, "weapon used: knife"
