@@ -7,6 +7,7 @@ drop view if exists newestcases;
 drop view if exists allcases;
 drop view if exists allunsuspectedpois;
 
+
 create view allunsuspectedpois (id, firstname, surname, birthdate)
 	as select p1.id, p1.firstname, p1.surname, p1.birthdate from poi p1
 	where p1.id not in 
@@ -37,3 +38,5 @@ create view alllinks ( case_id, poi_id, type_id, time, end_time )
 
 create view alltypes ( id, name )
 	as select id, name from type;
+
+create view 
