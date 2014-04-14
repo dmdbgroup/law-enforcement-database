@@ -33,7 +33,7 @@
 					<div class="menuDiv1"><a href="Cases">All cases</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=open">Open</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=closed">Closed</a></div>
-					<div class="menuDiv2"><a href="Cases?filter=recent">Recent</a></div>
+					<div class="menuDiv2"><a href="Cases?filter=recent">Recent Open</a></div>
 					<div class="menuDiv2"><a href="Cases?filter=oldest">Oldest Unsolved</a></div>
 					<div class="menuDiv1">Categories</div>
 					<% if (session.getAttribute("catmenu") != null) { %>

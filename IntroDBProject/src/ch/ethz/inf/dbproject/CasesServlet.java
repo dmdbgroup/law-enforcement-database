@@ -141,7 +141,7 @@ public final class CasesServlet extends HttpServlet {
 				table.addObjects(this.dbInterface.getCasesByStatus(false));
 
 			} else if (filter.equals("recent")) {
-				table.addObjects(this.dbInterface.getMostRecentCases());
+				table.addObjects(this.dbInterface.getMostRecentOpenCases());
 			}
 			
 			else if (filter.equals("oldest")) {

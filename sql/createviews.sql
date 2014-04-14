@@ -19,12 +19,12 @@ create view allcases (id, title, description, time, address, open, creator)
 create view newestcases ( id, title, description, time, address, open, creator) 
 	as select * from allcases where open = TRUE
 	order by time desc
-	limit 1;
+	limit 10;
 
 create view oldestcases ( id, title, description, time, address, open, creator) 
 	as select * from allcases where open = TRUE
 	order by time
-	limit 1;
+	limit 10;
 
 create view allpoi ( id, firstname, surname, birthdate )
 	as select id, firstname, surname, birthdate from poi;

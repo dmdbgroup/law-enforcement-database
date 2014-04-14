@@ -243,9 +243,9 @@ public final class DatastoreInterface
 		}
 	}
 
-	public final List<Case> getMostRecentCases()
+	public final List<Case> getMostRecentOpenCases()
 	{
-		return getCaseList("call get_most_recent_cases()");
+		return getCaseList("call get_most_recent_open_cases()");
 	}
 
 	public final List<Case> getOldestUnsolvedCases()

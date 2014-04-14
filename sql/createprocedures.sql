@@ -20,7 +20,7 @@ drop procedure if exists get_id_from_type;
 drop procedure if exists get_all_cases;
 drop procedure if exists get_all_poi;
 drop procedure if exists get_all_unsuspected_pois;
-drop procedure if exists get_most_recent_cases;
+drop procedure if exists get_most_recent_open_cases;
 drop procedure if exists get_oldest_unsolved_cases;
 drop procedure if exists get_all_categories;
 drop procedure if exists search_cases_by_type_of_conviction;
@@ -44,7 +44,7 @@ create procedure get_case( in case_id int ) select * from allcases where id = ca
 create procedure get_id_from_type(in name nvarchar(255)) select id from type t where t.name = name;
 create procedure get_all_cases () select * from allcases;
 create procedure get_all_poi () select * from allpoi;
-create procedure get_most_recent_cases() select * from newestcases;
+create procedure get_most_recent_open_cases() select * from newestcases;
 create procedure get_oldest_unsolved_cases() select * from oldestcases;
 create procedure get_all_categories() select * from alltypes;
 create procedure get_all_unsuspected_pois(in case_id int) select * from allunsuspectedpois;
