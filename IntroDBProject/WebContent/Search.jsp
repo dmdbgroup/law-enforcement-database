@@ -3,6 +3,7 @@
 
 <h1>Search</h1>
 
+<h2>Search Cases</h2>
 <hr/>
 
 <form method="get" action="Cases">
@@ -38,6 +39,8 @@
 
 <hr/>
 
+<h2>Search Persons of Interest</h2>
+<hr />
 <form method="get" action="Pois">
 <div>
 	<input type="hidden" name="filter" value="name" />

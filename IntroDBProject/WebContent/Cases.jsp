@@ -2,7 +2,6 @@
 <%@page import="ch.ethz.inf.dbproject.util.UserManagement"%>
 <%@page import="ch.ethz.inf.dbproject.model.User"%>
 <%@ include file="Header.jsp" %>
-<% final User user = (User) session.getAttribute(UserManagement.SESSION_USER); %>
 
 <h1>Cases</h1>
 

@@ -5,7 +5,6 @@
 <%@ include file="Header.jsp" %>
 
 <%
-final User user = (User) session.getAttribute(UserManagement.SESSION_USER);
 
 if (user != null) {
 	// There is a user logged in! Display a greeting!

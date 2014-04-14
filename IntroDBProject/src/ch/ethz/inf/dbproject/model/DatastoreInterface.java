@@ -249,7 +249,6 @@ public final class DatastoreInterface
 		{
 			final Statement stmt = this.sqlConnection.createStatement();
 			final ResultSet rs = stmt.executeQuery(query);
-
 			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
 			while (rs.next())
 			{

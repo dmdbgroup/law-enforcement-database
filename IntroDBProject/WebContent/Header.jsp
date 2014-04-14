@@ -2,9 +2,11 @@
 <%@page import="ch.ethz.inf.dbproject.model.DatastoreInterface"%>
 <%@page import="ch.ethz.inf.dbproject.UserServlet"%>
 <%@page import="ch.ethz.inf.dbproject.model.Category"%>
+<%@page import="ch.ethz.inf.dbproject.util.UserManagement"%>
+<%@page import="ch.ethz.inf.dbproject.model.User"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<% final User user = (User) session.getAttribute(UserManagement.SESSION_USER); %>
 <html>
 	
 	<head>
@@ -41,7 +43,7 @@
 					<% } %>
 					<div class="menuDiv1"><a href="Pois">Persons of interest</a></div>
 					<div class="menuDiv1"><a href="Search">Search</a></div>
-					<% if ((Boolean) session.getAttribute(UserServlet.SESSION_USER_LOGGED_IN)) { %>
+					<% if (user != null) { %>
 					<div class="menuDiv1"><a href="User">User Profile</a></div>
 					<% } else { %>
 					<div class="menuDiv1"><a href="User">Login</a></div>

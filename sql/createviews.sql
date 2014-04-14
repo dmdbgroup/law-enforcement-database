@@ -38,5 +38,3 @@ create view alllinks ( case_id, poi_id, type_id, time, end_time )
 
 create view alltypes ( id, name )
 	as select id, name from type;
-
-create view 

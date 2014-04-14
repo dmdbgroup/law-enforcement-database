@@ -29,9 +29,9 @@ drop procedure if exists search_poi_by_name;
 drop procedure if exists search_cases_by_status;
 drop procedure if exists user_exists;
 drop procedure if exists username_exists;
-drop procedure if exists getPoisByName;
-drop procedure if exists getPoisByConvDate;
-drop procedure if exists getPoisByConvType;
+drop procedure if exists get_pois_by_name;
+drop procedure if exists get_pois_by_conv_date;
+drop procedure if exists get_pois_by_conv_type;
 
 
 create procedure add_poi_note ( in poi_id int, in text nvarchar(2000) ) insert into poi_note ( poi_id, text ) values ( poi_id, text );
@@ -78,9 +78,9 @@ create procedure username_exists(in user_name nvarchar(255))
 	select * from user where name = user_name;
 create procedure search_cases_by_similar_title( in contains nvarchar(255) ) select * from allcases where title like concat('%', contains, '%');
 create procedure search_cases_by_similar_description( in contains nvarchar(255) ) select * from allcases where description like concat('%', contains, '%');
-create procedure getPoisByName( in name_term nvarchar(255) )
+create procedure get_pois_by_name( in name_term nvarchar(255) )
 	select * from allpoi where allpoi.firstname like name_term or allpoi.surname like concat('%', name_term, '%');
-create procedure getPoisByConvDate( in date_term date )
-	select * from allpoi join alllinks on allpoi.id = alllinks.poi_id where alllinks.time = time_term;
-create procedure getPoisByConvType( in type_term nvarchar(255) )
+create procedure get_pois_by_conv_date( in date_term date )
+	select * from allpoi join alllinks on allpoi.id = alllinks.poi_id where alllinks.time = date_term;
+create procedure get_pois_by_conv_type( in type_term nvarchar(255) )
 	select * from allpoi, alllinks, alltypes where allpoi.id = alllinks.poi_id and alltypes.id = alllinks.type_id and alltypes.name like concat('%', type_term, '%');
