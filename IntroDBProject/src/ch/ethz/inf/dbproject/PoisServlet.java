@@ -59,7 +59,6 @@ public final class PoisServlet extends HttpServlet{
 			table.addLinkColumn("", "Delete this person", "Pois?action=delete_poi&id=", "id");
 		}
 		
-		table.addObjects(dbInterface.getAllPoi());
 		
 		return table;
 	}
@@ -72,51 +71,74 @@ public final class PoisServlet extends HttpServlet{
 		
 		String action = request.getParameter("action");
 		String poi_id_string = request.getParameter("id");
+		String filter = request.getParameter("filter");
 		
-		if(poi_id_string != null)
-		{
+		BeanTableHelper<PersonOfInterest> table = poisTable((User) session.getAttribute(UserManagement.SESSION_USER));
+		
+		
+		if (poi_id_string != null) {
 			Integer poi_id = Integer.parseInt(poi_id_string);
 			if("delete_poi".equals(action))
 			{
 				dbInterface.deletePoi(poi_id);
 			}
 		}
-		else
-		{
-			if("add_poi".equals(action))
-			{
-				if (loggedUser == null) {
-					session.setAttribute("message", "You have to be logged in for this action");
+		else if ("add_poi".equals(action)) {
+			if (loggedUser == null) {
+				session.setAttribute("message", "You have to be logged in for this action");
+				table.addObjects(dbInterface.getAllPoi());
+			}
+			else {
+				String firstname = request.getParameter("firstname");
+				String surname = request.getParameter("surname");
+				String birthdayString = request.getParameter("birthday");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+				
+				if (firstname == null || surname == null || birthdayString == null){
+					session.setAttribute("message", "An error has occurred. Please try again.");
+					table.addObjects(dbInterface.getAllPoi());
+				}
+				else if (firstname.equals("") || surname.equals("") || birthdayString.equals("")){
+					session.setAttribute("message", "Enter all values.");
+					table.addObjects(dbInterface.getAllPoi());
 				}
 				else {
-					String firstname = request.getParameter("firstname");
-					String surname = request.getParameter("surname");
-					String birthdayString = request.getParameter("birthday");
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-					
-					if (firstname == null || surname == null || birthdayString == null)
-						session.setAttribute("message", "An error has occurred. Please try again.");
-					else if (firstname.equals("") || surname.equals("") || birthdayString.equals(""))
-						session.setAttribute("message", "Enter all values.");
-					else {
-						long ms = 0;
-						try
-						{
-							ms = sdf.parse(birthdayString).getTime();
-						} catch (ParseException e)
-						{
-							session.setAttribute("message", "Please enter a valid date");
-							this.getServletContext().getRequestDispatcher("/Pois.jsp").forward(request, response);
-							return;
-						}
-						Date birthday = new Date(ms);
-						dbInterface.addPoi(firstname, surname, birthday);
+					long ms = 0;
+					try
+					{
+						ms = sdf.parse(birthdayString).getTime();
+					} catch (ParseException e)
+					{
+						session.setAttribute("message", "Please enter a valid date");
+						this.getServletContext().getRequestDispatcher("/Pois.jsp").forward(request, response);
+						return;
 					}
+					Date birthday = new Date(ms);
+					dbInterface.addPoi(firstname, surname, birthday);
+					table.addObjects(dbInterface.getAllPoi());
 				}
 			}
+		} 
+		else if (filter != null) {
+			
+			if(filter.equals("name")) {
+				table.addObjects(this.dbInterface.getPoisByName(true));
+
+			} 
+			else if (filter.equals("date")) {
+				table.addObjects(this.dbInterface.getPoisByConvDate(false));
+
+			} 
+			else if (filter.equals("type")) {
+				table.addObjects(this.dbInterface.getPoisByConvType());
+			}
+			
+		}
+		else {
+			table.addObjects(dbInterface.getAllPoi());
 		}
 		
-		session.setAttribute("pois", poisTable((User) session.getAttribute(UserManagement.SESSION_USER)));
+		session.setAttribute("pois", table);
 		
 		AfterRequest.execute(request);
 		

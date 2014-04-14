@@ -242,6 +242,32 @@ public final class DatastoreInterface
 			return null;
 		}
 	}
+	
+	private final List<PersonOfInterest> getPoiList(String query)
+	{
+		try
+		{
+			final Statement stmt = this.sqlConnection.createStatement();
+			final ResultSet rs = stmt.executeQuery(query);
+
+			final List<PersonOfInterest> pois = new ArrayList<PersonOfInterest>();
+			while (rs.next())
+			{
+				PersonOfInterest c = new PersonOfInterest(rs);
+				pois.add(c);
+			}
+
+			rs.close();
+			stmt.close();
+
+			return pois;
+
+		} catch (final SQLException ex)
+		{
+			ex.printStackTrace();
+			return null;
+		}
+	}
 
 	public final List<Case> getMostRecentOpenCases()
 	{
@@ -257,6 +283,21 @@ public final class DatastoreInterface
 	{
 		return getCaseList("call search_cases_by_similar_description(\"" + parameter
 				+ "\")");
+	}
+	
+	public final List<PersonOfInterest> getPoisByName()
+	{
+		return getPoiList("call get_pois_by_name()");
+	}
+	
+	public final List<PersonOfInterest> getPoisByConvDate()
+	{
+		return getPoiList("call get_pois_by_conv_date()");
+	}
+	
+	public final List<PersonOfInterest> getPoisByConvType()
+	{
+		return getPoiList("call get_pois_by_conv_type()");
 	}
 
 	public final List<Category> getAllCategories()

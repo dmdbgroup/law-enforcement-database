@@ -38,4 +38,37 @@
 
 <hr/>
 
+<form method="get" action="Pois">
+<div>
+	<input type="hidden" name="filter" value="name" />
+	Search By Person of Interest Name:
+	<input type="text" name="nameTerm" />
+	<input type="submit" value="Search" title="Search by Name" />
+</div>
+</form>
+
+<hr/>
+
+<form method="get" action="Pois">
+<div>
+	<input type="hidden" name="filter" value="date" />
+	Search By Conviction Date:
+	<input type="text" name="dateTerm" />
+	<input type="submit" value="Search" title="Search by Date" />
+</div>
+</form>
+
+<hr/>
+
+<form method="get" action="Pois">
+<div>
+	<input type="hidden" name="filter" value="type" />
+	Search By Conviction Type:
+	<input type="text" name="typeTerm" />
+	<input type="submit" value="Search" title="Search by Type" />
+</div>
+</form>
+
+<hr/>
+
 <%@ include file="Footer.jsp" %>
