@@ -90,13 +90,24 @@ public final class UserServlet extends HttpServlet {
 			// Note: It is really not safe to use HTML get method to send passwords.
 			// However for this project, security is not a requirement.
 			final String password = request.getParameter("password");
+			
 
 			// TODO
 			// Ask the data store interface if it knows this user
 			// Retrieve User
 			// Store this user into the session
 			try {
-				if (dbInterface.usernameExists(username)) {
+				if (username == null || password == null){
+					session.setAttribute("message", "An error has occored. Please try again.");
+					this.getServletContext().getRequestDispatcher("/Registration.jsp").forward(request, response);
+					return;
+				}
+				else if ("".equals(username) || "".equals(password)) {
+					session.setAttribute("message", "Please enter both a username and a password.");
+					this.getServletContext().getRequestDispatcher("/Registration.jsp").forward(request, response);
+					return;
+				}
+				else if (dbInterface.usernameExists(username)) {
 					session.setAttribute("message", "Username already exists. Please choose another one.");
 					this.getServletContext().getRequestDispatcher("/Registration.jsp").forward(request, response);
 					return;

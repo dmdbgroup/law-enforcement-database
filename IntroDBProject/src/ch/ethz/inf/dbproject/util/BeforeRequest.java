@@ -22,6 +22,7 @@ public class BeforeRequest {
 		for (Category c : cats) {
 			r = r + "<div class=\"menuDiv2\"><a href=\"Cases?category_id="+c.getId()+"\">"+c.getName()+"</a></div>\n";
 		}
+		if (r.equals("")) r = "<div class=\"menuDiv2\">none</div>";
 		session.setAttribute("catmenu", r);
 	}
 
