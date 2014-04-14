@@ -64,7 +64,7 @@ create procedure add_case( in title nvarchar(255), in description nvarchar(2000)
 create procedure add_case_note( in case_id int, in text nvarchar(2000) )
 	insert into case_note ( case_id, text ) values ( case_id, text );
 create procedure delete_case( in case_id int ) delete from `case` where id = case_id;
-create procedure get_notes_for_poi( in poi_id int ) select * from poi_note where poi_id = poi_id;
+create procedure get_notes_for_poi( in poi_id int ) select * from poi_note p where p.poi_id = poi_id;
 create procedure delete_poi( in poi_id int ) delete from poi where id = poi_id;
 create procedure add_poi( in firstname nvarchar(255), in surname nvarchar(255), in birthdate Date )
 	insert into poi ( firstname, surname, birthdate ) values ( firstname, surname, birthdate );

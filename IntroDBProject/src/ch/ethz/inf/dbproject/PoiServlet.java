@@ -92,7 +92,7 @@ public final class PoiServlet extends HttpServlet{
 
 		// Add columns to the new table
 		table.addBeanColumn("Firstname", "firstname");
-		table.addBeanColumn("Surmame", "surname");
+		table.addBeanColumn("Surname", "surname");
 		table.addBeanColumn("Birthdate", "birthday");
 
 		table.addObject(p);
