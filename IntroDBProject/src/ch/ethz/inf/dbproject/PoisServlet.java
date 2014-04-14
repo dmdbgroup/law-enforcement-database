@@ -122,15 +122,15 @@ public final class PoisServlet extends HttpServlet{
 		else if (filter != null) {
 			
 			if(filter.equals("name")) {
-				table.addObjects(this.dbInterface.getPoisByName(true));
+				table.addObjects(this.dbInterface.getPoisByName(request.getParameter("nameTerm")));
 
 			} 
 			else if (filter.equals("date")) {
-				table.addObjects(this.dbInterface.getPoisByConvDate(false));
+				table.addObjects(this.dbInterface.getPoisByConvDate(request.getParameter("dateTerm")));
 
 			} 
 			else if (filter.equals("type")) {
-				table.addObjects(this.dbInterface.getPoisByConvType());
+				table.addObjects(this.dbInterface.getPoisByConvType(request.getParameter("typeTerm")));
 			}
 			
 		}

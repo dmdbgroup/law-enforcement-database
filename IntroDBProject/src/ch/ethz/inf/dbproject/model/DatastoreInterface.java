@@ -285,19 +285,19 @@ public final class DatastoreInterface
 				+ "\")");
 	}
 	
-	public final List<PersonOfInterest> getPoisByName()
+	public final List<PersonOfInterest> getPoisByName(String term)
 	{
-		return getPoiList("call get_pois_by_name()");
+		return getPoiList("call get_pois_by_name(\""+term+"\")");
 	}
 	
-	public final List<PersonOfInterest> getPoisByConvDate()
+	public final List<PersonOfInterest> getPoisByConvDate(String term)
 	{
-		return getPoiList("call get_pois_by_conv_date()");
+		return getPoiList("call get_pois_by_conv_date(\""+term+"\")");
 	}
 	
-	public final List<PersonOfInterest> getPoisByConvType()
+	public final List<PersonOfInterest> getPoisByConvType(String term)
 	{
-		return getPoiList("call get_pois_by_conv_type()");
+		return getPoiList("call get_pois_by_conv_type(\""+term+"\")");
 	}
 
 	public final List<Category> getAllCategories()
