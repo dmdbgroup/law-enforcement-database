@@ -17,18 +17,24 @@
 
 <form method="get" action="Cases">
 <div>
-	Title:
-	<input type="text" name="title" />
-	<br/>
-	Description:
-	<input type="text" name="description" />
-	<br/>
-	Address ( Street StreetNo, PLZ Ort ):
-	<input type="text" name="address" />
-	<br/>
-	Time ( yyyy-mm-dd ):
-	<input type="text" name="time" />
-	<br/>
+	<table>
+		<tr>
+			<td>Title:</td>
+			<td><input type="text" name="title" /></td>
+		</tr>
+		<tr>
+			<td>Description:</td>
+			<td><input type="text" name="description" /></td>
+		</tr>
+		<tr>
+			<td>Address ( Street StreetNo, PLZ Ort ):</td>
+			<td><input type="text" name="address" /></td>
+		</tr>
+		<tr>
+			<td>Time ( yyyy-mm-dd ):</td>
+			<td><input type="text" name="time" /></td>
+		</tr>
+	</table>
 	<input type="hidden" name="creator" value="<%=user.getName()%>" />
 	
 	<input type="hidden" name="action" value="addcase" />

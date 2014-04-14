@@ -15,18 +15,20 @@
 
 <form method="get" action="Pois">
 <div>
-	Firstname:
-	<input type="text" name="firstname" />
-	<br/>
-	
-	Surname:
-	<input type="text" name="surname" />
-	<br/>
-	
-	Birthday ( yyyy-mm-dd ):
-	<input type="text" name="birthday" />
-	<br/>
-	
+	<table>
+		<tr>
+			<td>Firstname:</td>
+			<td><input type="text" name="firstname" /></td>
+		</tr>
+		<tr>
+			<td>Surname:</td>
+			<td><input type="text" name="surname" /></td>
+		</tr>
+		<tr>
+			<td>Birthday (yyyy-mm-dd):</td>
+			<td><input type="text" name="birthday" /></td>
+		</tr>
+	</table>
 	<input type="hidden" name="action" value="add_poi" />
 	
 	<input type="submit" value="Add" title="addpoi" />
