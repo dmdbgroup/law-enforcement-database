@@ -56,12 +56,28 @@ public class Conviction
 	public String getDate()
 	{
 		if (date == null)
-			return "";
+			return "none";
 		else
 			return date.toString();
 	}
 
 	public String getEndDate()
+	{
+		if (endDate == null)
+			return "none";
+		else
+			return endDate.toString();
+	}
+	
+	public String getDateForBox()
+	{
+		if (date == null)
+			return "";
+		else
+			return date.toString();
+	}
+
+	public String getEndDateForBox()
 	{
 		if (endDate == null)
 			return "";
@@ -105,10 +121,10 @@ public class Conviction
 	
 	
 	public String getEndDateBox() {
-		return "<input type=\"text\" name=\"newenddates\" value=\""+getEndDate()+"\" />";
+		return "<input type=\"text\" name=\"newenddates\" value=\""+getEndDateForBox()+"\" />";
 	}
 	
 	public String getStartDateBox() {
-		return "<input type=\"text\" name=\"newstartdates\" value=\""+getDate()+"\" /><input type=\"hidden\" name=\"poi_id\" value=\""+poi_id+"\"";
+		return "<input type=\"text\" name=\"newstartdates\" value=\""+getDateForBox()+"\" /><input type=\"hidden\" name=\"poi_id\" value=\""+poi_id+"\"";
 	}
 }

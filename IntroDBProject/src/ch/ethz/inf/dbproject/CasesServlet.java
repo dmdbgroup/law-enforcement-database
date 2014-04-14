@@ -95,20 +95,30 @@ public final class CasesServlet extends HttpServlet {
 				String title = request.getParameter("title");
 				String description = request.getParameter("description");
 				String timeString = request.getParameter("time");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-				long ms = 0;
-				try
-				{
-					ms = sdf.parse(timeString).getTime();
-				} catch (ParseException e)
-				{
-					e.printStackTrace();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+				
+				if (title == null || description == null || timeString == null)
+					session.setAttribute("message", "An error has occurred. Please try again.");
+				else if (title.equals("") || description.equals("") || timeString.equals(""))
+					session.setAttribute("message", "Enter all values.");
+				else {
+					long ms = 0;
+					try
+					{
+						ms = sdf.parse(timeString).getTime();
+					} catch (ParseException e)
+					{
+						e.printStackTrace();
+						session.setAttribute("message", "Please enter a valid date");
+						this.getServletContext().getRequestDispatcher("/Cases").forward(request, response);
+						return;
+					}
+					Time time = new Time(ms);
+					String address = request.getParameter("address");
+					String creator = request.getParameter("creator");
+					dbInterface.addCase(title, description, time, address, creator, true);
+					table.addObjects(this.dbInterface.getAllCases());
 				}
-				Time time = new Time(ms);
-				String address = request.getParameter("address");
-				String creator = request.getParameter("creator");
-				dbInterface.addCase(title, description, time, address, creator, true);
-				table.addObjects(this.dbInterface.getAllCases());
 			}
 		}
 		

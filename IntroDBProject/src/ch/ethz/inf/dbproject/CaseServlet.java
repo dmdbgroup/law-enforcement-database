@@ -64,7 +64,7 @@ public final class CaseServlet extends HttpServlet {
 
 			// Check if a toggleOpen request was sent
 			final String action = request.getParameter("action");
-			if (loggedUser == null) {
+			if (loggedUser == null && action != null) {
 				session.setAttribute("message", "You have to be logged in for this action");
 			}
 			else if("toggleOpen".equals(action))
@@ -184,7 +184,7 @@ public final class CaseServlet extends HttpServlet {
 		);
 
 		// Add columns to the new table
-		table.addBeanColumn("Name, Birthdate", "personOfInterest");
+		table.addBeanColumn("POI Name, Birthdate", "personOfInterest");
 		table.addBeanColumn("Category", "category");
 		if (!a_case.getOpen() && logged_in) {
 			table.addBeanColumn("Start date", "startDateBox");

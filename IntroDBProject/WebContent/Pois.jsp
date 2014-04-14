@@ -25,7 +25,7 @@
 			<td><input type="text" name="surname" /></td>
 		</tr>
 		<tr>
-			<td>Birthday (yyyy-mm-dd):</td>
+			<td>Birthday ( yyyy-mm-dd ):</td>
 			<td><input type="text" name="birthday" /></td>
 		</tr>
 	</table>

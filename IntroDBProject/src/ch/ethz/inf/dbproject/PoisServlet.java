@@ -93,16 +93,25 @@ public final class PoisServlet extends HttpServlet{
 					String surname = request.getParameter("surname");
 					String birthdayString = request.getParameter("birthday");
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-					long ms = 0;
-					try
-					{
-						ms = sdf.parse(birthdayString).getTime();
-					} catch (ParseException e)
-					{
-						e.printStackTrace();
+					
+					if (firstname == null || surname == null || birthdayString == null)
+						session.setAttribute("message", "An error has occurred. Please try again.");
+					else if (firstname.equals("") || surname.equals("") || birthdayString.equals(""))
+						session.setAttribute("message", "Enter all values.");
+					else {
+						long ms = 0;
+						try
+						{
+							ms = sdf.parse(birthdayString).getTime();
+						} catch (ParseException e)
+						{
+							session.setAttribute("message", "Please enter a valid date");
+							this.getServletContext().getRequestDispatcher("/Pois.jsp").forward(request, response);
+							return;
+						}
+						Date birthday = new Date(ms);
+						dbInterface.addPoi(firstname, surname, birthday);
 					}
-					Date birthday = new Date(ms);
-					dbInterface.addPoi(firstname, surname, birthday);
 				}
 			}
 		}
