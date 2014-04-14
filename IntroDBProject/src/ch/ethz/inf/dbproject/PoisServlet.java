@@ -126,7 +126,13 @@ public final class PoisServlet extends HttpServlet{
 
 			} 
 			else if (filter.equals("date")) {
+				try {
 				table.addObjects(this.dbInterface.getPoisByConvDate(request.getParameter("dateTerm")));
+				} 
+				catch (Exception e) {
+					session.setAttribute("message", "Please enter a valid date format.");
+					table.addObjects(dbInterface.getAllPoi());
+				}
 
 			} 
 			else if (filter.equals("type")) {
